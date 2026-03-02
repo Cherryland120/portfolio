@@ -1,0 +1,23 @@
+/* assets/colors.css */
+
+:root {
+    --primary: #003E9F;
+    --secondary: #01D2FF;
+    --accent: #D8B455;
+    --dark: #121212;
+    --light: #f5f5f5;
+
+    /* Add as many as you like */
+    --light-bg: #F7F9FB;
+    --light-surface: #FFFFFF;
+
+    --dark-bg: #0C0D0F;
+    --dark-surface: #1A1C1F;
+
+    --text-primary: #111111;
+    --text-secondary: #6B7280;
+
+    /* Gradients */
+    --gradient-1: linear-gradient(90deg, var(--secondary), var(--primary));
+    --gradient-2: linear-gradient(90deg, #ff4f4f, #ff9900);
+}

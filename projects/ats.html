@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Animator Trigger System | Anointing Tamunowunari-Tasker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #151515;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #252525;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .back-button {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 0;
+        }
+
+        .back-button a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-button a:hover {
+            color: var(--accent-hover);
+        }
+
+        .project-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .project-banner {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+        }
+
+        .project-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .meta-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .content-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section li {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .content-section strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .content-section code {
+            background: var(--bg-primary);
+            color: var(--accent);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+        }
+
+        .feature-card h4 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .three-column-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .column {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .column h4 {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .content-image {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .content-image img {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .alert {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .alert p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        footer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 968px) {
+            .project-header h1 {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 2rem;
+            }
+
+            .three-column-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .project-banner {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .project-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo">Anointing T-T</a>
+            <ul class="nav-links">
+                <li><a href="/#work">work</a></li>
+                <li><a href="/#projects">projects</a></li>
+                <li><a href="/#blog">blog</a></li>
+                <li><a href="/#contact">contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Back Button -->
+    <div class="back-button">
+        <a href="/projects.html">
+            <i data-lucide="arrow-left"></i>
+            Back to Projects
+        </a>
+    </div>
+
+    <!-- Project Header -->
+    <div class="project-header">
+        <div class="project-banner">
+            <!-- Add your banner image here -->
+            <img src="../assets/images/project_images/projects/ats_pic.png" 
+                 alt="Animator Trigger System"
+                 onerror="this.style.display='none'">
+        </div>
+        <h1>Animator Trigger System</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem;">
+            A scriptless bridge between coding and visual scripting for Unity Animator parameters
+        </p>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <span class="badge">
+                <i data-lucide="package" style="width: 16px; height: 16px;"></i>
+                Unity 2020.3+
+            </span>
+            <span class="badge">
+                <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
+                MIT License
+            </span>
+        </div>
+
+        <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">C#</span>
+            <span class="tag">Game Development</span>
+            <span class="tag">Animation</span>
+            <span class="tag">Visual Scripting</span>
+            <span class="tag">No-Code</span>
+        </div>
+
+        <div class="project-meta">
+            <div class="meta-item">
+                <span class="meta-label">Type</span>
+                <span class="meta-value">Unity Addon / Package</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Status</span>
+                <span class="meta-value">Production Ready</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">License</span>
+                <span class="meta-value">MIT Open Source</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Overview Section -->
+        <div class="content-section">
+            <h2>Project Overview</h2>
+            <p>Animator Trigger System is a powerful Unity addon that provides a <strong>no-code solution</strong> for controlling Animator parameters based on values from your scripts. It eliminates the need to write custom Animator controller code while maintaining full flexibility.</p>
+            
+            <p>This tool bridges the gap between programming and visual animation control, allowing developers to create dynamic animation systems without writing repetitive controller code. Whether you're prototyping quickly or building production-ready features, this system streamlines your workflow.</p>
+
+            <h3>Key Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Direct Binding</h4>
+                    <p>Map script values directly to animator properties without writing any additional code</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Conditional Logic</h4>
+                    <p>Use if-else rules with comparison operators for complex animation behavior</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Nested Property Support</h4>
+                    <p>Access complex properties like myList.Count, transform.position, and more</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Optimized Performance</h4>
+                    <p>Cached reflection system with optional debug mode for production builds</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Visual Inspector</h4>
+                    <p>Intuitive dropdown-based configuration directly in the Unity Inspector</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Flexible Update Modes</h4>
+                    <p>Choose between Update, FixedUpdate, or LateUpdate based on your needs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started Section -->
+        <div class="content-section">
+            <h2>Getting Started</h2>
+            
+            <h3>Prerequisites</h3>
+            <ul>
+                <li>Unity 2020.3 or later</li>
+                <li>Animator component on the GameObject</li>
+            </ul>
+
+            <h3>Installation Methods</h3>
+            
+            <h4 style="color: var(--text-primary); margin-top: 2rem;">Method 1: Unity Package Manager (Recommended)</h4>
+            <ol style="margin-left: 2rem; color: var(--text-secondary);">
+                <li style="margin-bottom: 0.5rem;">Open Unity Package Manager</li>
+                <li style="margin-bottom: 0.5rem;">Click the '+' button, select "Add package from git URL"</li>
+                <li style="margin-bottom: 0.5rem;">Paste: <code>https://github.com/cherryland120/animator-trigger-system.git</code></li>
+            </ol>
+
+            <h4 style="color: var(--text-primary); margin-top: 2rem;">Method 2: Direct Download</h4>
+            <ol style="margin-left: 2rem; color: var(--text-secondary);">
+                <li style="margin-bottom: 0.5rem;">Download the .unitypackage from <a href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage" style="color: var(--accent);">tasguard.com</a></li>
+                <li style="margin-bottom: 0.5rem;">In Unity: Assets → Import Package → Custom Package</li>
+                <li style="margin-bottom: 0.5rem;">Select the downloaded file and click Import</li>
+            </ol>
+
+            <h4 style="color: var(--text-primary); margin-top: 2rem;">Method 3: Manual Installation</h4>
+            <ol style="margin-left: 2rem; color: var(--text-secondary);">
+                <li style="margin-bottom: 0.5rem;">Clone or download the repository</li>
+                <li style="margin-bottom: 0.5rem;">Copy the AnimatorTriggerSystem folder into your Unity project's Assets directory</li>
+            </ol>
+        </div>
+
+        <!-- Usage Section -->
+        <div class="content-section">
+            <h2>Usage Guide</h2>
+            
+            <h3>Basic Setup</h3>
+            <p><strong>Step 1: Add the Component</strong></p>
+            <ul>
+                <li>Select your GameObject with an Animator</li>
+                <li>Add Component → Animator Trigger System → Animator Trigger</li>
+            </ul>
+
+            <p><strong>Step 2: Configure Update Mode</strong></p>
+            <div class="code-block">
+                <pre>Update        - Evaluates every frame (default)
+FixedUpdate   - Evaluates at fixed intervals (physics)
+LateUpdate    - Evaluates after all Update calls</pre>
+            </div>
+
+            <p><strong>Step 3: Create Rules</strong></p>
+            <ul>
+                <li>Click "Add New Rule"</li>
+                <li>Configure each rule as shown below</li>
+            </ul>
+
+            <h3>Rule Configuration Examples</h3>
+            
+            <h4 style="color: var(--text-primary); margin-top: 2rem;">Direct Binding Example</h4>
+            <p>Monitor a health value and update animator float:</p>
+            <div class="code-block">
+                <pre>Parameter Name: Health
+Parameter Type: Float (auto-set)
+Rule Type: Direct Binding
+Source Object: [Your Player GameObject]
+Source Component: PlayerScript
+Source Field: currentHealth</pre>
+            </div>
+
+            <h4 style="color: var(--text-primary); margin-top: 2rem;">Conditional Logic Example</h4>
+            <p>Set a bool based on list count:</p>
+            <div class="code-block">
+                <pre>Parameter Name: HasItems
+Parameter Type: Bool (auto-set)
+Rule Type: Conditional
+Source Object: [Your Inventory GameObject]
+Source Component: InventoryScript
+Source Field: items.Count
+If Source: Greater Than
+Is (int): 0
+Then Set To (bool): true
+Else Set To (bool): false</pre>
+            </div>
+        </div>
+
+        <!-- Use Cases Section -->
+        <div class="content-section">
+            <h2>Use Cases</h2>
+            
+            <div class="three-column-layout">
+                <div class="column">
+                    <h4>Character Animation</h4>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Update "Speed" float based on rigidbody.velocity.magnitude</li>
+                        <li>Set "IsGrounded" bool based on GroundCheck script</li>
+                        <li>Trigger "Attack" when attackCooldown ≤ 0</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>UI Animation</h4>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Show notification icon when messages.Count > 0</li>
+                        <li>Update progress bar based on questProgress value</li>
+                        <li>Animate menu based on selectedIndex</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>Game State</h4>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Change environment animator based on timeOfDay</li>
+                        <li>Update enemy behavior based on player distance</li>
+                        <li>Sync audio visualizer with music intensity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Features Section -->
+        <div class="content-section">
+            <h2>Advanced Features</h2>
+            
+            <h3>Supported Property Types</h3>
+            <ul>
+                <li><strong>Primitives:</strong> int, float, bool, string</li>
+                <li><strong>Unity Types:</strong> Vector2, Vector3, Vector4, Color, Quaternion</li>
+                <li><strong>Collections:</strong> .Count, .Length properties</li>
+                <li><strong>Nested:</strong> Access properties of properties (e.g., transform.position.x)</li>
+            </ul>
+
+            <h3>Comparison Operators</h3>
+            <ul>
+                <li>Equals (==)</li>
+                <li>Not Equals (!=)</li>
+                <li>Greater Than (>)</li>
+                <li>Less Than (<)</li>
+                <li>Greater or Equal (≥)</li>
+                <li>Less or Equal (≤)</li>
+            </ul>
+
+            <h3>Performance Tips</h3>
+            <ul>
+                <li>Use appropriate Update Mode (FixedUpdate for physics-based values)</li>
+                <li>Disable unused rules instead of deleting them</li>
+                <li>Keep Debug Mode off in production builds</li>
+                <li>Click "Clear All Reflection Caches" if you modify source scripts</li>
+            </ul>
+        </div>
+
+        <!-- Troubleshooting Section -->
+        <div class="content-section">
+            <h2>Troubleshooting</h2>
+            
+            <h3>"Parameter name is empty"</h3>
+            <p><strong>Fix:</strong> Use the dropdown to select a parameter from your Animator Controller. Make sure your Animator has a Controller assigned.</p>
+
+            <h3>"No public fields/properties"</h3>
+            <p><strong>Fix:</strong> Make sure your field is public in your script</p>
+            <div class="code-block">
+                <pre>public List&lt;GameObject&gt; myList;  // Correct
+private List&lt;GameObject&gt; myList; // Wrong</pre>
+            </div>
+
+            <h3>"Could not find field or property"</h3>
+            <p><strong>Fix:</strong></p>
+            <ul>
+                <li>Check spelling and case sensitivity</li>
+                <li>Use dropdowns instead of typing manually</li>
+                <li>Click "Clear All Reflection Caches" after script changes</li>
+            </ul>
+
+            <h3>Value doesn't update</h3>
+            <p><strong>Fix:</strong></p>
+            <ul>
+                <li>Enable Debug Mode to see evaluation logs</li>
+                <li>Check that the source GameObject is assigned correctly</li>
+                <li>Verify the rule is enabled (checkbox)</li>
+            </ul>
+
+            <h3>Debug Mode</h3>
+            <p>Enable debug logging to see detailed evaluation information:</p>
+            <div class="code-block">
+                <pre>Inspector → Debug → Check "Debug Mode"</pre>
+            </div>
+            
+            <div class="alert">
+                <p><strong>💡 Tip:</strong> Keep Debug Mode off in production for better performance!</p>
+            </div>
+        </div>
+
+        <!-- Technical Details Section -->
+        <div class="content-section">
+            <h2>Project Structure</h2>
+            <div class="code-block">
+                <pre>AnimatorTriggerSystem/
+├── Runtime/
+│   ├── AnimatorTrigger.cs           # Main component
+│   ├── AnimatorParameterRule.cs      # Rule logic
+│   └── AnimatorTriggerSystem.asmdef
+└── Editor/
+    ├── AnimatorTriggerEditor.cs      # Custom inspector
+    ├── AnimatorParameterRuleDrawer.cs # Property drawer
+    └── AnimatorTriggerSystem.Editor.asmdef</pre>
+            </div>
+        </div>
+
+        <!-- Call to Action Section -->
+        <div class="content-section">
+            <h2>Get Involved</h2>
+            <p>Contributions are welcome! Whether you want to report bugs, suggest features, or contribute code, feel free to get involved with the project.</p>
+            
+            <div class="btn-container">
+                <a href="https://github.com/cherryland120/animator-trigger-system" target="_blank" class="btn btn-primary">
+                    <i data-lucide="github"></i>
+                    View on GitHub
+                </a>
+                <a href="https://github.com/cherryland120/animator-trigger-system/issues" target="_blank" class="btn btn-secondary">
+                    <i data-lucide="bug"></i>
+                    Report Issue
+                </a>
+                <a href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage" target="_blank" class="btn btn-secondary">
+                    <i data-lucide="download"></i>
+                    Download Package
+                </a>
+                <a href="mailto:tasguardtech@gmail.com" class="btn btn-secondary">
+                    <i data-lucide="mail"></i>
+                    Contact Support
+                </a>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <p style="text-align: center; font-style: italic;">I really hope you enjoy it</p>
+                <p style="text-align: right; color: var(--accent); font-weight: 500;">— Anointing Tamunowunari-Tasker</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://www.linkedin.com/in/anointing-tamunowunari-tasker">LinkedIn</a>
+            <a href="https://github.com/cherryland120">GitHub</a>
+            <a href="mailto:anointing.tasker@icloud.com">Email</a>
+            <a href="/assets/data/Anointing Tamunowunari-Tasker.docx" download>Resume</a>
+        </div>
+        <p class="copyright">© 2026 Anointing Tamunowunari-Tasker</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

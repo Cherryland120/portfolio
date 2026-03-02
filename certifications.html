@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <title>Certifications - Anointing Tamunowunari-Tasker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #151515;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #252525;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* Header Section */
+        .header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Filter Tabs */
+        .filter-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Certifications Grid */
+        .certifications-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cert-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--accent);
+            transition: height 0.3s;
+        }
+
+        .cert-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .cert-card:hover::before {
+            height: 100%;
+        }
+
+        .cert-card.clickable {
+            cursor: pointer;
+        }
+
+        .cert-card.clickable::after {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 20px;
+            height: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cert-card.clickable:hover::after {
+            opacity: 1;
+        }
+
+        .cert-card.not-available {
+            opacity: 0.7;
+        }
+
+        .cert-header {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cert-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+        }
+
+        .cert-title-wrapper {
+            flex: 1;
+        }
+
+        .cert-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+            margin-bottom: 0.25rem;
+        }
+
+        .cert-issuer {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .cert-credential {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .cert-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .cert-tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .link-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cert-card.clickable:hover .link-icon {
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .certifications-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Anointing T-T</a>
+            <a href="index.html" class="back-link">
+                <i data-lucide="arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="header">
+        <h1>Professional Certifications</h1>
+        <p class="header-subtitle">A comprehensive collection of verified credentials and achievements in AI, machine
+            learning, and software engineering</p>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">6</span>
+                <span class="stat-label">Total Certifications</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Providers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2023-2025</span>
+                <span class="stat-label">Time Period</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="filterCerts('all')">All Certifications</button>
+            <button class="filter-btn" onclick="filterCerts('ibm')">IBM</button>
+            <button class="filter-btn" onclick="filterCerts('atlassian')">Atlassian</button>
+            <button class="filter-btn" onclick="filterCerts('other')">Other</button>
+        </div>
+    </section>
+
+    <!-- Certifications Grid -->
+    <section class="certifications-container">
+        <div class="certifications-grid" id="certsGrid">
+            <!-- Certifications will be loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="copyright">© 2026 Anointing Tamunowunari-Tasker</p>
+    </footer>
+
+    <script>
+        let allCertifications = [];
+
+        // Load certifications from JSON file
+        async function loadCertifications() {
+            try {
+                const response = await fetch('assets/data/certifications.json');
+                allCertifications = await response.json();
+                
+                // Update stats
+                updateStats();
+                
+                // Initial render
+                renderCertifications();
+            } catch (error) {
+                console.error('Error loading certifications:', error);
+                document.getElementById('certsGrid').innerHTML = '<p style="color: var(--text-secondary);">Failed to load certifications. Please try again later.</p>';
+            }
+        }
+
+        function updateStats() {
+            const providers = [...new Set(allCertifications.map(cert => cert.issuer))];
+            document.querySelector('.stat-number').textContent = allCertifications.length;
+            document.querySelectorAll('.stat-number')[1].textContent = providers.length;
+        }
+
+        function getIcon(issuer) {
+            const icons = {
+                'IBM': 'cpu',
+                'Atlassian': 'git-branch',
+                'Duolingo': 'globe',
+                'African Leadership Development Centre (ALDC)': 'award'
+            };
+            return icons[issuer] || 'award';
+        }
+
+        function renderCertifications(filter = 'all') {
+            const grid = document.getElementById('certsGrid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? allCertifications 
+                : allCertifications.filter(cert => cert.category === filter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-secondary);">No certifications found in this category.</p>';
+                return;
+            }
+
+            filtered.forEach(cert => {
+                const hasLink = cert.link && cert.link.trim() !== '';
+                const card = document.createElement('a');
+                card.className = hasLink ? 'cert-card clickable' : 'cert-card not-available';
+                
+                if (hasLink) {
+                    card.href = cert.link;
+                    card.target = '_blank';
+                    card.rel = 'noopener noreferrer';
+                }
+                
+                card.innerHTML = `
+                    <div class="cert-header">
+                        <div class="cert-icon">
+                            <i data-lucide="${getIcon(cert.issuer)}"></i>
+                        </div>
+                        <div class="cert-title-wrapper">
+                            <div class="cert-title">${cert.title}</div>
+                            <div class="cert-issuer">${cert.issuer}</div>
+                        </div>
+                    </div>
+                    <div class="cert-credential">
+                        <strong>ID:</strong> ${cert.credential}
+                    </div>
+                    <div class="cert-tags">
+                        ${cert.tags.map(tag => `<span class="cert-tag">${tag}</span>`).join('')}
+                    </div>
+                    ${hasLink ? '<i data-lucide="external-link" class="link-icon"></i>' : ''}
+                `;
+                
+                grid.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function filterCerts(category) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Render filtered certifications
+            renderCertifications(category);
+        }
+
+        // Load certifications on page load
+        loadCertifications();
+    </script>
+</body>
+
+</html>

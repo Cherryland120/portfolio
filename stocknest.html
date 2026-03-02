@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stock & Sales — Business Manager (SQL)</title>
+  <style>
+    :root{ --bg:#0f1724; /* deep */ --card:#0b1220; --muted:#9aa7b2; --accent:#7c3aed; --accent-2:#06b6d4; --glass: rgba(255,255,255,0.04); --success:#16a34a; --danger:#ef4444; --radius:14px; --p:16px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color-scheme: dark; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071023,#071124);color:#e6eef3}
+    .app{max-width:1200px;margin:24px auto;padding:20px}
+    header.header{display:flex;align-items:center;gap:12px}
+    header.header h1{margin:0;font-size:20px}
+    .top-row{display:flex;gap:12px;align-items:center;margin:14px 0}
+
+    /* Cards / screens */
+    .screen{display:none;background:var(--card);border-radius:18px;padding:18px;box-shadow:0 6px 24px rgba(2,6,23,0.6);} 
+    .screen.active{display:block}
+    .card-title{font-weight:600;margin-bottom:12px}
+
+    /* Home nav */
+    .nav-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .nav-btn{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:white;padding:14px;border-radius:12px;font-weight:600;cursor:pointer;box-shadow:0 8px 18px rgba(124,58,237,0.18)}
+    .nav-btn.small{padding:10px;font-size:14px}
+
+    /* controls */
+    .form-row{display:flex;gap:10px;align-items:center}
+    .input, select{background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:12px;color:inherit;outline:none}
+    .input.small{padding:8px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02)}
+
+    /* list / table */
+    .table{width:100%;border-collapse:collapse;margin-top:12px}
+    .table th,.table td{padding:10px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.02)}
+
+    /* cart */
+    .cart{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:12px}
+    .cart-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0}
+
+    /* buttons */
+    .btn{padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:600}
+    .btn.primary{background:var(--accent);color:white}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    .btn.warn{background:var(--success);color:white}
+    .btn.danger{background:var(--danger);color:white}
+
+    /* inventory editor styles */
+    .inventory-item{background:rgba(255,255,255,0.02);border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.04)}
+    .inventory-item .item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .inventory-item .item-fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+
+    /* Sales layout */
+    .sales-container{display:grid;grid-template-columns:1fr 420px;gap:16px;align-items:start}
+    
+    /* Modal/Overlay */
+    .modal-overlay{ position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center; z-index:1000; opacity:0; transition:opacity 0.3s ease; }
+    .modal-overlay.active{display:flex;opacity:1}
+    .modal-content{ background:var(--card); border-radius:18px; padding:24px; max-width:480px; width:90%; box-shadow:0 12px 48px rgba(0,0,0,0.6); transform:scale(0.9); transition:transform 0.3s ease; }
+    .modal-overlay.active .modal-content{transform:scale(1)}
+    
+    /* responsive */
+    @media (max-width:920px){ .nav-grid{grid-template-columns:1fr} .app{padding:12px} .inventory-item .item-fields{grid-template-columns:1fr} .sales-container{grid-template-columns:1fr} }
+
+    /* small helper */
+    .muted{color:var(--muted);font-size:13px}
+    .flex{display:flex;gap:12px;align-items:center}
+    .spacer{flex:1}
+    .center{text-align:center}
+    .top-inv{display:flex;gap:10px;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>Stocknest</h1>
+        <div class="muted">Simple offline stock & invoice app</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="top-inv">
+        <select id="inventory-select" class="input"></select>
+        <button id="add-inventory" class="btn primary">+ Add Inventory</button>
+        <button id="del-inventory" class="btn ghost">Delete</button>
+        <div class="pill">₦aira</div>
+      </div>
+    </header>
+
+    <!-- HOME -->
+    <main id="screen-home" class="screen active">
+      <div class="card-title">Home</div>
+      <div class="nav-grid">
+        <button class="nav-btn" data-nav="sales">Make a Sale</button>
+        <button class="nav-btn" data-nav="inventory">Edit Inventory</button>
+      </div>
+
+      <section style="margin-top:16px">
+        <div class="card-title">Inventory Snapshot</div>
+        <div id="inventory-snapshot" class="screen-sub"></div>
+      </section>
+    </main>
+
+    <!-- SALES -->
+    <section id="screen-sales" class="screen">
+      <div class="top-row">
+        <button class="btn ghost" data-nav="home">← Back</button>
+        <div class="spacer"></div>
+        <button class="btn danger" id="clear-sales">Clear Cart</button>
+      </div>
+
+      <div class="card-title">Sales</div>
+
+      <div class="sales-container">
+        <!-- Left: Item selector and recent sales -->
+        <div>
+          <div class="form-row">
+            <select id="select-item" class="input" aria-label="select item"></select>
+            <input id="price-display" class="input" readonly style="width:120px" />
+            <input id="qty-input" type="number" min="1" value="1" class="input small" style="width:80px" />
+            <input id="discount-input" type="number" min="0" value="0" class="input small" style="width:100px" placeholder="Discount" title="Amount discounted (₦) — this subtracts from the item price when adding to invoice" />
+            <button id="add-to-cart" class="btn primary">Add to Invoice</button>
+          </div>
+
+          <div style="margin-top:12px" class="muted">Select item, set qty and optional discount (per item) — price shown for reference.</div>
+
+          <div style="margin-top:18px">
+            <div class="card-title">Recent Sales</div>
+            <table class="table" id="recent-sales">
+              <thead><tr><th>Customer</th><th>Item</th><th>Qty</th><th>Sold @</th><th>Total</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Invoice -->
+        <aside>
+          <div class="card-title">Invoice</div>
+          <div class="cart" id="cart">
+            <div id="cart-rows"></div>
+            <div class="cart-row" style="border-top:1px solid rgba(255,255,255,0.03);padding-top:12px;margin-top:12px">
+              <div><strong>Total</strong></div>
+              <div id="cart-total"><strong>₦0</strong></div>
+            </div>
+            <div style="margin-top:12px">
+              <button id="commit-sale" class="btn primary" style="width:100%">Commit Sale</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- EDIT INVENTORY -->
+    <section id="screen-inventory" class="screen">
+      <div class="top-row">
+        <button class="btn ghost" data-nav="home">← Back</button>
+        <div class="spacer"></div>
+        <button id="add-new-product" class="btn primary">+ Add New Product</button>
+      </div>
+
+      <div class="card-title">Edit Inventory</div>
+      <div class="muted" style="margin-bottom:16px">Edit product names, stock quantities, and prices. Changes are saved automatically to an embedded SQL DB (client-side).</div>
+
+      <div id="inventory-list"></div>
+
+      <div style="margin-top:16px" class="flex">
+        <button id="save-inventory" class="btn primary">Save All Changes</button>
+        <div class="spacer"></div>
+        <button id="reset-defaults" class="btn ghost">Reset to Defaults</button>
+      </div>
+    </section>
+
+    <!-- Modal for customer name & invoice generation -->
+    <div id="invoice-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="card-title">Generate Invoice</div>
+        <div class="muted" style="margin-bottom:16px">Enter customer name to complete this sale</div>
+        
+        <label class="muted" style="display:block;margin-bottom:6px">Customer Name</label>
+        <input type="text" id="customer-name-input" class="input" placeholder="Enter customer name" style="width:100%;margin-bottom:16px" />
+        
+        <div style="display:flex;gap:10px">
+          <button id="confirm-invoice" class="btn primary" style="flex:1">Generate Invoice & Complete Sale</button>
+          <button id="cancel-invoice" class="btn ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- hidden download link for CSV / debugging -->
+    <a id="dl" style="display:none"></a>
+  </div>
+
+  <!-- sql.js (SQLite compiled to WASM) + jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // -------------------- CLIENT-SIDE SQL PERSISTENCE --------------------
+    // This implementation uses sql.js (SQLite compiled to WASM) and stores the
+    // database binary in localStorage (base64). NOTE: this still remains per-browser.
+    // If you want true cross-browser/device sync, you'll need a small server API that
+    // stores the DB (or the JSON) in a central SQL database — example included at the end.
+
+    const DB_STORAGE_KEY = 'bm_sql_db_v1';
+    let SQL; // the sql.js object
+    let db;  // the open Database instance
+
+    // utility: base64 <-> Uint8Array
+    function toBase64(bytes){ let binary=''; const len=bytes.length; for(let i=0;i<len;i++) binary += String.fromCharCode(bytes[i]); return btoa(binary); }
+    function fromBase64(b64){ const binary = atob(b64); const len = binary.length; const bytes = new Uint8Array(len); for(let i=0;i<len;i++) bytes[i] = binary.charCodeAt(i); return bytes; }
+
+    async function initSql(){
+      SQL = await initSqlJs({ locateFile: file => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.wasm' });
+      const saved = localStorage.getItem(DB_STORAGE_KEY);
+      if(saved){
+        try{
+          const u8 = fromBase64(saved);
+          db = new SQL.Database(u8);
+        }catch(e){ console.error('Failed to restore DB, creating new one', e); db = new SQL.Database(); }
+      }else{
+        db = new SQL.Database();
+      }
+
+      // create schema if needed
+      db.run(`
+        CREATE TABLE IF NOT EXISTS inventories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);
+        CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, inventory_id INTEGER, name TEXT, stock INTEGER, price INTEGER);
+        CREATE TABLE IF NOT EXISTS sales (id INTEGER PRIMARY KEY AUTOINCREMENT, inventory_id INTEGER, customer TEXT, item_id INTEGER, item_name TEXT, qty INTEGER, soldPrice INTEGER, total INTEGER, date TEXT);
+      `);
+
+      // ensure at least one inventory exists
+      const inv = db.exec("SELECT id FROM inventories LIMIT 1");
+      if(inv.length === 0 || inv[0].values.length === 0){
+        db.run("INSERT INTO inventories (name) VALUES (?), (?)", ['Default Store','Second Store']);
+
+        // insert some default items for the first inventory
+        const firstId = db.exec("SELECT id FROM inventories ORDER BY id LIMIT 1")[0].values[0][0];
+        const stm = db.prepare("INSERT INTO items (inventory_id, name, stock, price) VALUES (?,?,?,?)");
+        const defaults = [ ['Rice (5kg)',40,800], ['Beans (2kg)',25,600], ['Garri (2kg)',50,300], ['Indomie (1)',120,250] ];
+        defaults.forEach(d=>{ stm.run([firstId, d[0], d[1], d[2]]); });
+        stm.free();
+        saveDB();
+      }
+
+      // open UI
+      initApp();
+    }
+
+    function saveDB(){
+      try{
+        const data = db.export();
+        const b64 = toBase64(data);
+        localStorage.setItem(DB_STORAGE_KEY, b64);
+      }catch(e){console.error('saveDB failed', e);}    
+    }
+
+    // -------------------- HELPERS (SQL wrappers) --------------------
+    function getInventories(){
+      const r = db.exec("SELECT id, name FROM inventories ORDER BY id");
+      if(!r.length) return [];
+      return r[0].values.map(v=>({id:v[0],name:v[1]}));
+    }
+    function addInventory(name){ db.run("INSERT INTO inventories (name) VALUES (?)", [name]); saveDB(); }
+    function deleteInventory(id){
+      // delete inventory and its items and sales
+      db.run("DELETE FROM sales WHERE inventory_id = ?", [id]);
+      db.run("DELETE FROM items WHERE inventory_id = ?", [id]);
+      db.run("DELETE FROM inventories WHERE id = ?", [id]);
+      saveDB();
+    }
+
+    function getItems(inventoryId){
+      const r = db.exec("SELECT id, name, stock, price FROM items WHERE inventory_id = ? ORDER BY id", [inventoryId]);
+      if(!r.length) return [];
+      return r[0].values.map(v=>({id:v[0],name:v[1],stock:v[2],price:v[3]}));
+    }
+    function upsertItem(inventoryId, item){
+      if(item.id){ db.run("UPDATE items SET name=?, stock=?, price=? WHERE id=? AND inventory_id=?", [item.name, item.stock, item.price, item.id, inventoryId]); }
+      else { db.run("INSERT INTO items (inventory_id,name,stock,price) VALUES (?,?,?,?)", [inventoryId,item.name,item.stock,item.price]); }
+      saveDB();
+    }
+    function deleteItem(itemId){ db.run("DELETE FROM items WHERE id=?", [itemId]); saveDB(); }
+
+    function addSale(inventoryId, sale){ db.run("INSERT INTO sales (inventory_id,customer,item_id,item_name,qty,soldPrice,total,date) VALUES (?,?,?,?,?,?,?,?)", [inventoryId,sale.customer,sale.item_id,sale.item_name,sale.qty,sale.soldPrice,sale.total,sale.date]); saveDB(); }
+    function getRecentSales(inventoryId, limit=10){ const r = db.exec("SELECT customer,item_name,qty,soldPrice,total,date FROM sales WHERE inventory_id = ? ORDER BY id DESC LIMIT ?", [inventoryId, limit]); if(!r.length) return []; return r[0].values.map(v=>({customer:v[0],item:v[1],qty:v[2],soldPrice:v[3],total:v[4],date:v[5]})); }
+
+    // -------------------- APP STATE --------------------
+    let activeInventoryId = null;
+    let itemsCache = []; // items for active inventory
+    let cart = [];
+
+    // -------------------- DOM refs --------------------
+    const navBtns = document.querySelectorAll('[data-nav]');
+    const screens = document.querySelectorAll('.screen');
+    const selectItem = document.getElementById('select-item');
+    const priceDisplay = document.getElementById('price-display');
+    const qtyInput = document.getElementById('qty-input');
+    const discountInput = document.getElementById('discount-input');
+    const addToCartBtn = document.getElementById('add-to-cart');
+    const cartRows = document.getElementById('cart-rows');
+    const cartTotal = document.getElementById('cart-total');
+    const recentSalesTbody = document.querySelector('#recent-sales tbody');
+    const commitSaleBtn = document.getElementById('commit-sale');
+    const clearSalesBtn = document.getElementById('clear-sales');
+    const invoiceModal = document.getElementById('invoice-modal');
+    const customerNameInput = document.getElementById('customer-name-input');
+    const confirmInvoiceBtn = document.getElementById('confirm-invoice');
+    const cancelInvoiceBtn = document.getElementById('cancel-invoice');
+    const inventoryList = document.getElementById('inventory-list');
+    const saveInventoryBtn = document.getElementById('save-inventory');
+    const addNewProductBtn = document.getElementById('add-new-product');
+    const resetDefaultsBtn = document.getElementById('reset-defaults');
+    const inventorySnapshot = document.getElementById('inventory-snapshot');
+    const inventorySelect = document.getElementById('inventory-select');
+    const addInventoryBtn = document.getElementById('add-inventory');
+    const delInventoryBtn = document.getElementById('del-inventory');
+
+    // -------------------- NAV --------------------
+    navBtns.forEach(b => b.addEventListener('click', (e)=>{ const t=e.currentTarget.dataset.nav; showScreen(t); }))
+    function showScreen(name){ screens.forEach(s=>s.classList.remove('active')); const target = document.getElementById('screen-'+name)||document.getElementById('screen-'+name); if(target) target.classList.add('active'); if(name==='sales'){renderSelect(); renderRecentSales(); renderCart();} if(name==='inventory'){renderInventoryList();} if(name==='home'){renderSnapshot();} }
+
+    // -------------------- RENDERERS --------------------
+    function renderInventoryOptions(){ inventorySelect.innerHTML=''; const invs = getInventories(); invs.forEach(inv=>{ const opt = document.createElement('option'); opt.value=inv.id; opt.textContent=inv.name; inventorySelect.appendChild(opt); }); if(invs.length){ if(!activeInventoryId) activeInventoryId = invs[0].id; inventorySelect.value = activeInventoryId; } else { activeInventoryId = null; } }
+
+    inventorySelect.addEventListener('change', ()=>{ activeInventoryId = +inventorySelect.value; loadActiveInventory(); });
+    addInventoryBtn.addEventListener('click', ()=>{ const name = prompt('Inventory name','New Inventory'); if(!name) return; addInventory(name); renderInventoryOptions(); inventorySelect.value = getInventories().slice(-1)[0].id; activeInventoryId = +inventorySelect.value; loadActiveInventory(); alert('Inventory added'); });
+    delInventoryBtn.addEventListener('click', ()=>{ if(!activeInventoryId) return alert('No inventory selected'); if(!confirm('Delete this inventory and all its items & sales?')) return; deleteInventory(activeInventoryId); const invs=getInventories(); activeInventoryId = invs.length?invs[0].id:null; renderInventoryOptions(); loadActiveInventory(); alert('Deleted'); });
+
+    function loadActiveInventory(){
+      itemsCache = activeInventoryId ? getItems(activeInventoryId) : [];
+      renderSelect(); renderSnapshot(); renderInventoryList(); renderRecentSales(); renderCart();
+    }
+
+    function renderSelect(){ selectItem.innerHTML=''; itemsCache.forEach((it, idx)=>{ const opt = document.createElement('option'); opt.value=it.id; opt.textContent=it.name; selectItem.appendChild(opt); }); updatePriceDisplay(); }
+    function updatePriceDisplay(){ const it = itemsCache.find(i=>i.id==selectItem.value); priceDisplay.value = it? currency(it.price) : ''; }
+    selectItem.addEventListener('change', updatePriceDisplay);
+
+    function renderSnapshot(){ inventorySnapshot.innerHTML=''; const wrapper=document.createElement('div'); wrapper.style.display='grid'; wrapper.style.gridTemplateColumns='repeat(3,1fr)'; wrapper.style.gap='10px'; itemsCache.forEach(it=>{ const c=document.createElement('div'); c.style.padding='10px'; c.style.borderRadius='10px'; c.style.background='rgba(255,255,255,0.02)'; c.innerHTML=`<div style="font-weight:700">${it.name}</div><div class="muted">Stock: ${it.stock}</div><div style="margin-top:6px">Price: <strong>${currency(it.price)}</strong></div>`; wrapper.appendChild(c) }); inventorySnapshot.appendChild(wrapper);
+    }
+
+    function renderRecentSales(){ recentSalesTbody.innerHTML=''; const last = activeInventoryId ? getRecentSales(activeInventoryId) : []; last.forEach(s=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${s.customer||'N/A'}</td><td>${s.item}</td><td>${s.qty}</td><td>${currency(s.soldPrice)}</td><td>${currency(s.total)}</td>`; recentSalesTbody.appendChild(tr); }) }
+
+    function renderCart(){ cartRows.innerHTML=''; let total=0; cart.forEach((c, i)=>{ const row=document.createElement('div'); row.className='cart-row'; row.innerHTML=`<div>${c.name} <div class='muted'>₦${c.soldPrice} × ${c.qty} (discounted ₦${c.discount||0})</div></div><div><div style='display:flex;gap:8px;align-items:center'><div><strong>${currency(c.total)}</strong></div><button data-i='${i}' class='btn ghost btn-edit-cart'>✏️</button><button data-i='${i}' class='btn danger btn-delete-cart'>🗑</button></div></div>`; cartRows.appendChild(row); total+=c.total; }); cartTotal.innerHTML = `<strong>${currency(total)}</strong>`;
+
+      // attach row handlers
+      document.querySelectorAll('.btn-edit-cart').forEach(b=>b.addEventListener('click', (e)=>{ const idx = +e.currentTarget.dataset.i; const newQty = prompt('New qty', cart[idx].qty); if(newQty){ cart[idx].qty = Math.max(1, +newQty); cart[idx].total = cart[idx].qty * cart[idx].soldPrice; renderCart(); } }));
+      document.querySelectorAll('.btn-delete-cart').forEach(b=>b.addEventListener('click', (e)=>{ const idx=+e.currentTarget.dataset.i; cart.splice(idx,1); renderCart(); }));
+    }
+
+    function renderInventoryList(){ inventoryList.innerHTML=''; itemsCache.forEach((it, idx)=>{ const itemDiv = document.createElement('div'); itemDiv.className = 'inventory-item'; itemDiv.innerHTML = `
+          <div class="item-header">
+            <strong>Product #${idx + 1}</strong>
+            <button class="btn danger btn-delete-item" data-id="${it.id}">Delete</button>
+          </div>
+          <div class="item-fields">
+            <div>
+              <label class="muted" style="display:block;margin-bottom:4px">Product Name</label>
+              <input type="text" class="input item-name" data-id="${it.id}" value="${it.name}" placeholder="Product name">
+            </div>
+            <div>
+              <label class="muted" style="display:block;margin-bottom:4px">Stock Quantity</label>
+              <input type="number" class="input item-stock" data-id="${it.id}" value="${it.stock}" min="0">
+            </div>
+            <div>
+              <label class="muted" style="display:block;margin-bottom:4px">Price (₦)</label>
+              <input type="number" class="input item-price" data-id="${it.id}" value="${it.price}" min="0">
+              <div class="muted" style="margin-top:6px;font-size:12px">Amount discounted: use this number when adding per-item discounts in Sales (₦)</div>
+            </div>
+          </div>
+        `; inventoryList.appendChild(itemDiv);
+      });
+
+      setTimeout(()=>{
+        document.querySelectorAll('.btn-delete-item').forEach(btn=>{ btn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); const id = parseInt(this.getAttribute('data-id')); if(confirm('Delete this item?')){ deleteItem(id); loadActiveInventory(); } }); });
+      },50);
+    }
+
+    // -------------------- ACTIONS --------------------
+    addToCartBtn.addEventListener('click', ()=>{
+      if(!activeInventoryId) return alert('No inventory selected');
+      const itemId = +selectItem.value; const it = itemsCache.find(x=>x.id==itemId); if(!it) return alert('Choose an item'); const qty = Math.max(1, Math.floor(+qtyInput.value || 1)); const discount = Math.max(0, +discountInput.value || 0); const soldPrice = Math.max(0, it.price - discount); const total = soldPrice * qty; cart.push({ name: it.name, item_id: it.id, qty, soldPrice, total, discount }); renderCart(); });
+
+    clearSalesBtn.addEventListener('click', ()=>{ if(confirm('Clear cart?')){ cart=[]; renderCart(); } });
+
+    commitSaleBtn.addEventListener('click', ()=>{ if(cart.length===0) return alert('Cart is empty'); for(const c of cart){ const item = itemsCache.find(x=>x.id==c.item_id); if(!item || item.stock < c.qty) return alert(`Not enough stock for ${c.name}`); } customerNameInput.value = ''; invoiceModal.classList.add('active'); customerNameInput.focus(); });
+
+    cancelInvoiceBtn.addEventListener('click', ()=>{ invoiceModal.classList.remove('active'); });
+
+    confirmInvoiceBtn.addEventListener('click', ()=>{
+      const customerName = customerNameInput.value.trim() || 'Anonymous'; const tstamp = new Date().toISOString();
+      for(const c of cart){ // update stock
+        const item = itemsCache.find(x=>x.id==c.item_id);
+        const newStock = item.stock - c.qty;
+        db.run("UPDATE items SET stock = ? WHERE id = ?", [newStock, item.id]);
+        // log sale
+        addSale(activeInventoryId, { customer: customerName, item_id: item.id, item_name: item.name, qty: c.qty, soldPrice: c.soldPrice, total: c.total, date: tstamp });
+      }
+      // generate pdf (cart still available)
+      generateInvoicePDF(customerName);
+      saveDB();
+      cart = [];
+      loadActiveInventory();
+      invoiceModal.classList.remove('active');
+      alert('Sale completed & invoice generated!');
+    });
+
+    addNewProductBtn.addEventListener('click', ()=>{ if(!activeInventoryId) return alert('Select inventory first'); upsertItem(activeInventoryId, { name: 'New Product', stock:0, price:0 }); loadActiveInventory(); });
+
+    saveInventoryBtn.addEventListener('click', ()=>{
+      // gather values and update DB
+      document.querySelectorAll('.item-name').forEach(inp=>{ const id=+inp.dataset.id; const name = inp.value.trim() || 'Unnamed Product'; const item = itemsCache.find(x=>x.id==id); if(item) { upsertItem(activeInventoryId,{ id, name, stock:item.stock, price:item.price }); db.run('UPDATE items SET name = ? WHERE id = ?', [name, id]); }});
+      document.querySelectorAll('.item-stock').forEach(inp=>{ const id=+inp.dataset.id; const val = Math.max(0, Math.floor(+inp.value || 0)); db.run('UPDATE items SET stock = ? WHERE id = ?', [val, id]); });
+      document.querySelectorAll('.item-price').forEach(inp=>{ const id=+inp.dataset.id; const val = Math.max(0, Math.floor(+inp.value || 0)); db.run('UPDATE items SET price = ? WHERE id = ?', [val, id]); });
+      saveDB(); loadActiveInventory(); alert('Inventory saved!');
+    });
+
+    resetDefaultsBtn.addEventListener('click', ()=>{ if(!confirm('Reset all products in this inventory to defaults?')) return; if(!activeInventoryId) return; // simple defaults
+      // delete items for this inventory then add defaults
+      db.run('DELETE FROM items WHERE inventory_id = ?', [activeInventoryId]);
+      const stm = db.prepare('INSERT INTO items (inventory_id,name,stock,price) VALUES (?,?,?,?)');
+      const defaults = [ ['Rice (5kg)',40,800], ['Beans (2kg)',25,600], ['Garri (2kg)',50,300], ['Indomie (1)',120,250] ];
+      defaults.forEach(d=> stm.run([activeInventoryId, d[0], d[1], d[2]])); stm.free(); saveDB(); loadActiveInventory(); alert('Reset done');
+    });
+
+    // -------------------- PDF GENERATION --------------------
+    function generateInvoicePDF(customerName){ const { jsPDF } = window.jspdf; const doc = new jsPDF({ unit:'pt', format:'a4' }); const margin = 40; let y = 40; doc.setFontSize(18); doc.text('INVOICE', margin, y); y+=24; doc.setFontSize(11); doc.text(`Date: ${new Date().toLocaleString()}`, margin, y); y+=14; doc.text(`Customer: ${customerName}`, margin, y); y+=18; doc.text('Items:', margin, y); y+=16; doc.setFontSize(10); doc.text('Name', margin, y); doc.text('Qty', 320, y); doc.text('Price', 380, y); doc.text('Total', 480, y); y+=12; for(const c of cart){ if(y>740){ doc.addPage(); y=40; } doc.text(c.name, margin, y); doc.text(String(c.qty), 320, y); doc.text(currency(c.soldPrice), 380, y); doc.text(currency(c.total), 480, y); y+=16; } const sum = cart.reduce((s,c)=>s+c.total,0); y+=12; doc.setFontSize(12); doc.text('Grand Total:', margin, y); doc.text(currency(sum), 480, y); doc.save(`invoice-${customerName.replace(/\s+/g,'_')}-${Date.now()}.pdf`); }
+
+    // -------------------- INIT APP + misc --------------------
+    function currency(n){ try{ return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits:0 }).format(n); }catch(e){return '₦'+n} }
+
+    function initApp(){ renderInventoryOptions(); loadActiveInventory(); renderRecentSales(); }
+
+    function loadActiveInventory(){ renderInventoryOptions(); if(!activeInventoryId){ const invs = getInventories(); activeInventoryId = invs.length?invs[0].id:null; } renderInventoryOptions(); if(activeInventoryId) inventorySelect.value = activeInventoryId; itemsCache = activeInventoryId ? getItems(activeInventoryId) : []; renderSelect(); renderSnapshot(); renderInventoryList(); renderRecentSales(); renderCart(); }
+
+    // expose small debug
+    window._bm_sql = { getInventories, getItems, addInventory, deleteInventory, db, saveDB };
+
+    // bootstrap
+    initSql();
+
+    // -------------------- OPTIONAL: server sync (NOT enabled) --------------------
+    /*
+      NOTE: To have the same data across different browsers/devices you must run a small server that
+      keeps the SQL or JSON in a central database. Example (Node + Express + SQLite):
+
+      const express = require('express');
+      const sqlite3 = require('sqlite3').verbose();
+      const db = new sqlite3.Database('bm-server.db');
+      const app = express(); app.use(express.json());
+
+      // endpoint to get inventories/items
+      app.get('/api/inventories', (req,res)=>{ db.all('SELECT * FROM inventories', (err,rows)=>res.json(rows)); });
+      app.post('/api/sync', (req,res)=>{ // accept client JSON and merge/save
+        // implement authentication + validation
+      });
+
+      app.listen(3000);
+
+      On the client you'd call fetch('/api/...') to load and save.
+    */
+
+  </script>
+</body>
+</html>

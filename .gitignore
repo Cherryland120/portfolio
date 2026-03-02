@@ -1,0 +1,48 @@
+config.js
+sentiment_app.py
+/.venv/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+env/
+ENV/
+
+
+
+
+# Environment Variables (CRITICAL - Never commit these!)
+.env
+.env.local
+.env.production
+config.py
+secrets.py
+
+# PyTorch Models (optional - might be large)
+# Uncomment if you don't want to commit your model
+# sentiment_model.pth
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# CSV files with sensitive data
+negative_reviews.csv
+test.js
+testing.html

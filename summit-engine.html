@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Layout Container */
+        .unity-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top Menu Bar */
+        .menu-bar {
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .menu-bar .brand {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .menu-bar span {
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .menu-bar span:hover {
+            background: #3e3e42;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            padding-right: 8px;
+            border-right: 1px solid #3e3e42;
+        }
+
+        .toolbar button {
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .toolbar button:hover {
+            background: #3e3e42;
+        }
+
+        .play-controls {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Panels */
+        .panel {
+            background: #252526;
+            border: 1px solid #3e3e42;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: #2d2d30;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow: auto;
+            padding: 8px;
+        }
+
+        /* Tab System */
+        .tabs {
+            display: flex;
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            border-right: 1px solid #3e3e42;
+        }
+
+        .tab:hover {
+            background: #3e3e42;
+        }
+
+        .tab.active {
+            background: #1e1e1e;
+        }
+
+        /* Resizers */
+        .resizer {
+            background: #3e3e42;
+            cursor: col-resize;
+            width: 4px;
+            transition: background 0.2s;
+        }
+
+        .resizer:hover {
+            background: #007acc;
+        }
+
+        .resizer-horizontal {
+            cursor: row-resize;
+            height: 4px;
+            width: 100%;
+        }
+
+        /* Left Panel - Hierarchy */
+        .left-panel {
+            width: 20%;
+            min-width: 150px;
+        }
+
+        /* Center Area */
+        .center-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viewport-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viewport-content {
+            flex: 1;
+            background: #3e3e42;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Scene View Placeholder */
+        .scene-placeholder {
+            color: #888;
+            text-align: center;
+        }
+
+        .scene-placeholder h2 {
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        /* Bottom Panel - Project */
+        .bottom-panel {
+            height: 30%;
+            min-height: 100px;
+        }
+
+        /* Right Panel - Inspector */
+        .right-panel {
+            width: 20%;
+            min-width: 200px;
+        }
+
+        /* Hierarchy Items */
+        .hierarchy-item {
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hierarchy-item:hover {
+            background: #3e3e42;
+        }
+
+        .hierarchy-item.selected {
+            background: #094771;
+        }
+
+        .hierarchy-item .icon {
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Inspector Content */
+        .inspector-section {
+            background: #2d2d30;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .inspector-section-header {
+            padding: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .inspector-section-content {
+            padding: 12px;
+        }
+
+        .property-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .property-inputs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .property-inputs input {
+            width: 60px;
+            padding: 4px;
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            color: #e0e0e0;
+            font-size: 11px;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: #007acc;
+            padding: 4px 12px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Project Folders */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            padding: 8px;
+        }
+
+        .project-item {
+            background: #2d2d30;
+            padding: 12px 8px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .project-item:hover {
+            background: #3e3e42;
+        }
+
+        .project-item .folder-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="unity-container">
+        <!-- Menu Bar -->
+        <div class="menu-bar">
+            <span class="brand">Unity</span>
+            <span>File</span>
+            <span>Edit</span>
+            <span>Assets</span>
+            <span>GameObject</span>
+            <span>Component</span>
+            <span>Window</span>
+            <span>Help</span>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <button title="Move">✋</button>
+                <button title="Rotate">🔄</button>
+                <button title="Scale">📏</button>
+            </div>
+            <div class="toolbar-group">
+                <button title="Pivot">⚡</button>
+            </div>
+            <div class="play-controls">
+                <button id="playBtn" title="Play">▶️</button>
+                <button title="Pause">⏸️</button>
+                <button title="Step">⏭️</button>
+            </div>
+            <div class="toolbar-group">
+                <span style="font-size: 12px; padding: 6px;">Layers</span>
+                <span style="font-size: 12px; padding: 6px;">Layout</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel: Hierarchy -->
+            <div class="panel left-panel" id="leftPanel">
+                <div class="panel-header">
+                    <span>Hierarchy</span>
+                    <span style="cursor: pointer;">+</span>
+                </div>
+                <div class="panel-content" id="hierarchyContent">
+                    <div class="hierarchy-item" data-id="1">
+                        <span class="icon">📷</span>
+                        <span>Main Camera</span>
+                    </div>
+                    <div class="hierarchy-item" data-id="2">
+                        <span class="icon">💡</span>
+                        <span>Directional Light</span>
+                    </div>
+                    <div class="hierarchy-item" data-id="3">
+                        <span class="icon">📦</span>
+                        <span>Cube</span>
+                    </div>
+                    <div class="hierarchy-item" data-id="4">
+                        <span class="icon">⚪</span>
+                        <span>Sphere</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resizer" id="leftResizer"></div>
+
+            <!-- Center Area: Scene/Game View + Project -->
+            <div class="center-area">
+                <div class="viewport-area" id="viewportArea">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="scene">Scene</div>
+                        <div class="tab" data-tab="game">Game</div>
+                    </div>
+                    <div class="viewport-content" id="sceneView">
+                        <!-- PLACEHOLDER: Your Scene/Game view goes here -->
+                        <div class="scene-placeholder">
+                            <h2>Scene View Placeholder</h2>
+                            <p>Plug your 3D viewport/canvas here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resizer resizer-horizontal" id="bottomResizer"></div>
+
+                <div class="panel bottom-panel" id="bottomPanel">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="project">Project</div>
+                        <div class="tab" data-tab="console">Console</div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="project-grid">
+                            <div class="project-item">
+                                <div class="folder-icon">📁</div>
+                                <div>Scenes</div>
+                            </div>
+                            <div class="project-item">
+                                <div class="folder-icon">📁</div>
+                                <div>Scripts</div>
+                            </div>
+                            <div class="project-item">
+                                <div class="folder-icon">📁</div>
+                                <div>Materials</div>
+                            </div>
+                            <div class="project-item">
+                                <div class="folder-icon">📁</div>
+                                <div>Prefabs</div>
+                            </div>
+                            <div class="project-item">
+                                <div class="folder-icon">📁</div>
+                                <div>Textures</div>
+                            </div>
+                            <div class="project-item">
+                                <div class="folder-icon">📁</div>
+                                <div>Models</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resizer" id="rightResizer"></div>
+
+            <!-- Right Panel: Inspector -->
+            <div class="panel right-panel" id="rightPanel">
+                <div class="panel-header">Inspector</div>
+                <div class="panel-content" id="inspectorContent">
+                    <p style="color: #888; text-align: center; margin-top: 32px;">Select an object</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>Ready</span>
+            <span>FPS: 60</span>
+        </div>
+    </div>
+
+    <script>
+        // Resizer Logic
+        function makeResizable(resizer, panel, direction) {
+            let startSize, startPos;
+
+            resizer.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                startPos = direction === 'horizontal' ? e.clientY : e.clientX;
+                startSize = direction === 'horizontal' ? 
+                    panel.offsetHeight : panel.offsetWidth;
+                
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                const delta = (direction === 'horizontal' ? e.clientY : e.clientX) - startPos;
+                const newSize = startSize + (direction === 'horizontal' ? delta : delta);
+                
+                if (direction === 'horizontal') {
+                    const maxHeight = window.innerHeight * 0.7;
+                    const minHeight = 100;
+                    panel.style.height = Math.min(Math.max(newSize, minHeight), maxHeight) + 'px';
+                } else {
+                    const maxWidth = window.innerWidth * 0.4;
+                    const minWidth = 150;
+                    panel.style.width = Math.min(Math.max(newSize, minWidth), maxWidth) + 'px';
+                }
+            }
+
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+        }
+
+        // Initialize resizers
+        makeResizable(document.getElementById('leftResizer'), document.getElementById('leftPanel'), 'vertical');
+        makeResizable(document.getElementById('rightResizer'), document.getElementById('rightPanel'), 'vertical');
+        makeResizable(document.getElementById('bottomResizer'), document.getElementById('bottomPanel'), 'horizontal');
+
+        // Hierarchy Selection
+        const hierarchyItems = document.querySelectorAll('.hierarchy-item');
+        const inspectorContent = document.getElementById('inspectorContent');
+
+        hierarchyItems.forEach(item => {
+            item.addEventListener('click', () => {
+                hierarchyItems.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                
+                const objName = item.querySelector('span:last-child').textContent;
+                showInspector(objName);
+            });
+        });
+
+        function showInspector(name) {
+            inspectorContent.innerHTML = `
+                <div class="inspector-section">
+                    <div class="inspector-section-header">${name}</div>
+                    <div class="inspector-section-content">
+                        <div style="font-size: 11px; color: #888;">Tag: Untagged</div>
+                        <div style="font-size: 11px; color: #888;">Layer: Default</div>
+                    </div>
+                </div>
+                <div class="inspector-section">
+                    <div class="inspector-section-header">Transform</div>
+                    <div class="inspector-section-content">
+                        <div class="property-row">
+                            <span>Position</span>
+                            <div class="property-inputs">
+                                <input type="number" value="0" placeholder="X">
+                                <input type="number" value="0" placeholder="Y">
+                                <input type="number" value="0" placeholder="Z">
+                            </div>
+                        </div>
+                        <div class="property-row">
+                            <span>Rotation</span>
+                            <div class="property-inputs">
+                                <input type="number" value="0" placeholder="X">
+                                <input type="number" value="0" placeholder="Y">
+                                <input type="number" value="0" placeholder="Z">
+                            </div>
+                        </div>
+                        <div class="property-row">
+                            <span>Scale</span>
+                            <div class="property-inputs">
+                                <input type="number" value="1" placeholder="X">
+                                <input type="number" value="1" placeholder="Y">
+                                <input type="number" value="1" placeholder="Z">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button style="width: 100%; padding: 8px; background: #2d2d30; border: none; color: #e0e0e0; cursor: pointer; margin-top: 8px; border-radius: 4px;">Add Component</button>
+            `;
+        }
+
+        // Tab Switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const parent = tab.parentElement;
+                parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Play Button
+        document.getElementById('playBtn').addEventListener('click', function() {
+            this.textContent = this.textContent === '▶️' ? '⏹️' : '▶️';
+        });
+    </script>
+</body>
+</html>

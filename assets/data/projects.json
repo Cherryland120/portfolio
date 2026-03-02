@@ -1,0 +1,27 @@
+[
+    {
+        "id": "0001",
+        "title": "Thoracic Disease Model Performance Review",
+        "icon": "assets/images/project_images/cards/final_year.jpg",
+        "tags": [
+            "Python",
+            "TensorFlow",
+            "Machine Learning"
+        ],
+        "description": "Developed an advanced machine learning model to detect fraudulent activities in petroleum plants, achieving 90% detection accuracy. Implemented comprehensive feature engineering and data cleaning processes.",
+        "details_page": "projects/tdmpr.html",
+        "github": "https://github.com/Cherryland120"
+    },
+    {
+        "id": "0002",
+        "title": "Animator Trigger System",
+        "icon": "assets/images/project_images/cards/ats_pic.png",
+        "tags": [
+            "C#",
+            "Unity Engine"
+        ],
+        "description": "Developed a dynamic way of triggering animations in Unity using C# scripts, allowing for more dynamic and responsive character movements in games.",
+        "details_page": "projects/ats.html",
+        "github": "https://github.com/Cherryland120"
+    }
+]

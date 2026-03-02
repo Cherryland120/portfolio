@@ -1,0 +1,68 @@
+[
+    {
+        "title": "IBM AI Engineering Specialization",
+        "issuer": "IBM",
+        "credential": "SETB575CQNM7",
+        "category": "ibm",
+        "tags": [
+            "AI Engineering",
+            "Specialization"
+        ],
+        "link": "https://www.coursera.org/account/accomplishments/specialization/SETB575CQNM7"
+    },
+    {
+        "title": "AI Capstone Project with Deep Learning",
+        "issuer": "IBM",
+        "credential": "WV6JD30WQ3V1",
+        "category": "ibm",
+        "tags": [
+            "Deep Learning",
+            "Capstone"
+        ],
+        "link": "https://www.coursera.org/account/accomplishments/records/WV6JD30WQ3V1"
+    },
+    {
+        "title": "Project: Generative AI Applications with RAG and LangChain",
+        "issuer": "IBM",
+        "credential": "GQHRZZD2IQL4",
+        "category": "ibm",
+        "tags": [
+            "RAG",
+            "LangChain",
+            "Project"
+        ],
+        "link": "https://www.coursera.org/account/accomplishments/records/GQHRZZD2IQL4"
+    },
+    {
+        "title": "Version Control with Git",
+        "issuer": "Atlassian",
+        "credential": "4T6CQVV9KVGP",
+        "category": "atlassian",
+        "tags": [
+            "Git",
+            "Version Control"
+        ],
+        "link": "https://www.coursera.org/account/accomplishments/records/4T6CQVV9KVGP"
+    },
+    {
+        "title": "Diploma in Leadership Development",
+        "issuer": "African Leadership Development Centre (ALDC)",
+        "credential": "Verified",
+        "category": "other",
+        "tags": [
+            "Leadership",
+            "Professional Development"
+        ]
+    },
+    {
+        "title": "Duolingo English Test",
+        "issuer": "Duolingo",
+        "credential": "d2m173hhkmk62eel",
+        "category": "other",
+        "tags": [
+            "English Proficiency",
+            "Language"
+        ],
+        "link": "https://certs.duolingo.com/d2m173hhkmk62eel"
+    }
+]

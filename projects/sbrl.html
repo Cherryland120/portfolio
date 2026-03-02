@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment-Based Review Logger | Anointing Tamunowunari-Tasker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        /* Navigation */
+        nav {
+            background: #1a1a2e;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 2000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00d9ff;
+        }
+
+        /* Back Button */
+        .back-button {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+        }
+
+        .back-button a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-button a:hover {
+            color: #5568d3;
+        }
+
+        /* Project Header */
+        .project-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .project-header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .content-section {
+            background: white;
+            padding: 50px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .content-section h2 {
+            font-size: 32px;
+            color: #1a1a2e;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .content-section h3 {
+            font-size: 24px;
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section p {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .content-section ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .content-section li {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 3px solid #667eea;
+        }
+
+        .stat-card h4 {
+            font-size: 36px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 18px;
+            margin: 30px 0;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 50px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #00d9ff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .project-header h1 {
+                font-size: 32px;
+            }
+
+            .content-section {
+                padding: 30px 20px;
+            }
+
+            .content-section h2 {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Back Button -->
+    <div class="back-button">
+        <a href="../projects.html">← Back to Projects</a>
+    </div>
+
+    <!-- Project Header -->
+    <div class="project-header">
+        <div class="header-content">
+            <div class="project-icon">🛢️</div>
+            <h1>Petroleum Fraud Detection System</h1>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">TensorFlow</span>
+                <span class="tag">Keras</span>
+                <span class="tag">Machine Learning</span>
+            </div>
+            <div class="project-meta">
+                <div class="meta-item">
+                    <span>📅</span>
+                    <span>Completed: August 2025</span>
+                </div>
+                <div class="meta-item">
+                    <span>🏢</span>
+                    <span>Tasguard Solutions</span>
+                </div>
+                <div class="meta-item">
+                    <span>👤</span>
+                    <span>Role: Lead Developer</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Overview Section -->
+        <div class="content-section">
+            <h2>Project Overview</h2>
+            <p>The Petroleum Fraud Detection System is an advanced machine learning solution designed to identify and prevent fraudulent activities in petroleum plants. This project leverages state-of-the-art deep learning techniques to analyze operational data and detect anomalies that indicate potential fraud.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>90%</h4>
+                    <p>Detection Accuracy</p>
+                </div>
+                <div class="stat-card">
+                    <h4>80%</h4>
+                    <p>Processing Time Reduction</p>
+                </div>
+                <div class="stat-card">
+                    <h4>100K+</h4>
+                    <p>Data Points Analyzed</p>
+                </div>
+            </div>
+
+            <h3>Challenge</h3>
+            <p>Petroleum plants face significant financial losses due to fraudulent activities that are difficult to detect using traditional methods. The challenge was to develop an automated system capable of identifying complex fraud patterns in real-time operational data.</p>
+
+            <h3>Solution</h3>
+            <p>I developed a comprehensive machine learning model using Python, TensorFlow, and Keras. The solution involved:</p>
+            <ul>
+                <li>Extensive data collection and preprocessing from multiple petroleum plant sources</li>
+                <li>Advanced feature engineering to extract meaningful patterns from raw operational data</li>
+                <li>Implementation of deep neural networks optimized for anomaly detection</li>
+                <li>Real-time monitoring system integration for immediate fraud alerts</li>
+                <li>Comprehensive testing and validation using historical fraud cases</li>
+            </ul>
+        </div>
+
+        <!-- Technical Details Section -->
+        <div class="content-section">
+            <h2>Technical Implementation</h2>
+            
+            <h3>Data Processing Pipeline</h3>
+            <p>The data processing pipeline handles multiple data streams from petroleum plant operations, including transaction logs, sensor data, and operational metrics. The system performs real-time cleaning, normalization, and feature extraction.</p>
+
+            <div class="image-placeholder">
+                [Architecture Diagram - Add your image here]
+            </div>
+
+            <h3>Model Architecture</h3>
+            <p>The model uses a combination of convolutional neural networks and recurrent layers to capture both spatial and temporal patterns in the data. Key components include:</p>
+            <ul>
+                <li>Multi-layer CNN for feature extraction from operational patterns</li>
+                <li>LSTM layers for temporal sequence analysis</li>
+                <li>Attention mechanisms to focus on critical fraud indicators</li>
+                <li>Custom loss functions optimized for imbalanced fraud detection</li>
+            </ul>
+
+            <h3>Technologies Used</h3>
+            <ul>
+                <li><strong>Python 3.9+</strong> - Core programming language</li>
+                <li><strong>TensorFlow 2.x</strong> - Deep learning framework</li>
+                <li><strong>Keras</strong> - High-level neural network API</li>
+                <li><strong>Pandas & NumPy</strong> - Data manipulation and analysis</li>
+                <li><strong>Scikit-learn</strong> - Machine learning utilities</li>
+                <li><strong>Docker</strong> - Containerization for deployment</li>
+            </ul>
+        </div>
+
+        <!-- Results Section -->
+        <div class="content-section">
+            <h2>Results & Impact</h2>
+            
+            <h3>Performance Metrics</h3>
+            <p>The system achieved exceptional performance across all key metrics:</p>
+            <ul>
+                <li>Detection accuracy of 90% on validation dataset</li>
+                <li>False positive rate reduced to less than 5%</li>
+                <li>Processing time reduced by over 80% compared to manual review</li>
+                <li>Real-time alerts delivered within 2 seconds of fraud detection</li>
+            </ul>
+
+            <h3>Business Impact</h3>
+            <p>The implementation of this fraud detection system resulted in significant business benefits:</p>
+            <ul>
+                <li>Prevented estimated $2M+ in potential fraud losses annually</li>
+                <li>Reduced investigation time from days to minutes</li>
+                <li>Improved compliance with industry regulations</li>
+                <li>Enhanced trust and transparency in operational processes</li>
+            </ul>
+
+            <div class="image-placeholder">
+                [Results Dashboard Screenshot - Add your image here]
+            </div>
+        </div>
+
+        <!-- Lessons Learned Section -->
+        <div class="content-section">
+            <h2>Lessons Learned</h2>
+            <p>This project provided valuable insights into developing production-ready machine learning systems:</p>
+            <ul>
+                <li><strong>Data Quality</strong> - The importance of comprehensive data cleaning and validation cannot be overstated. Investing time in preprocessing significantly improved model performance.</li>
+                <li><strong>Feature Engineering</strong> - Domain expertise combined with automated feature selection led to better results than purely automated approaches.</li>
+                <li><strong>Model Interpretability</strong> - Providing explainable predictions was crucial for stakeholder buy-in and system trust.</li>
+                <li><strong>Continuous Monitoring</strong> - Implementing monitoring and retraining pipelines ensures the model adapts to evolving fraud patterns.</li>
+            </ul>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="content-section">
+            <h2>Get Involved</h2>
+            <p>Interested in learning more about this project or discussing similar fraud detection challenges? Feel free to reach out or check out the code repository.</p>
+            
+            <div class="btn-container">
+                <a href="../pdf/petroleum-fraud.pdf" download class="btn btn-primary">Download Project PDF</a>
+                <a href="https://github.com/yourusername/petroleum-fraud" target="_blank" class="btn btn-secondary">View on GitHub</a>
+                <a href="mailto:anointingtasker2002@gmail.com" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <script src="../components.js"></script>
+    <script>loadComponents();</script>
+</body>
+</html>
