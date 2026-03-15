@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <title>Animator Trigger System | Anointing Tamunowunari-Tasker</title>
     <style>
@@ -12,15 +15,7 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #151515;
-            --text-primary: #e8e8e8;
-            --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #252525;
-        }
+        /* Theme variables are now loaded from /assets/colors.css */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -30,7 +25,7 @@
         }
 
         nav {
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: sticky;
@@ -104,7 +99,7 @@
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-project);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -132,7 +127,7 @@
         }
 
         .tag {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             color: var(--accent);
             padding: 0.5rem 1rem;
             border-radius: 20px;
@@ -144,7 +139,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             color: var(--accent);
             padding: 0.4rem 0.8rem;
             border-radius: 6px;
@@ -364,7 +359,7 @@
         }
 
         .alert {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             border-left: 4px solid var(--accent);
             padding: 1rem 1.5rem;
             border-radius: 6px;
@@ -443,6 +438,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav>
@@ -469,15 +465,14 @@
     <div class="project-header">
         <div class="project-banner">
             <!-- Add your banner image here -->
-            <img src="../assets/images/project_images/projects/ats_pic.png" 
-                 alt="Animator Trigger System"
-                 onerror="this.style.display='none'">
+            <img src="../assets/images/project_images/projects/ats_pic.png" alt="Animator Trigger System"
+                onerror="this.style.display='none'">
         </div>
         <h1>Animator Trigger System</h1>
         <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem;">
             A scriptless bridge between coding and visual scripting for Unity Animator parameters
         </p>
-        
+
         <div style="margin-bottom: 1.5rem;">
             <span class="badge">
                 <i data-lucide="package" style="width: 16px; height: 16px;"></i>
@@ -519,9 +514,13 @@
         <!-- Overview Section -->
         <div class="content-section">
             <h2>Project Overview</h2>
-            <p>Animator Trigger System is a powerful Unity addon that provides a <strong>no-code solution</strong> for controlling Animator parameters based on values from your scripts. It eliminates the need to write custom Animator controller code while maintaining full flexibility.</p>
-            
-            <p>This tool bridges the gap between programming and visual animation control, allowing developers to create dynamic animation systems without writing repetitive controller code. Whether you're prototyping quickly or building production-ready features, this system streamlines your workflow.</p>
+            <p>Animator Trigger System is a powerful Unity addon that provides a <strong>no-code solution</strong> for
+                controlling Animator parameters based on values from your scripts. It eliminates the need to write
+                custom Animator controller code while maintaining full flexibility.</p>
+
+            <p>This tool bridges the gap between programming and visual animation control, allowing developers to create
+                dynamic animation systems without writing repetitive controller code. Whether you're prototyping quickly
+                or building production-ready features, this system streamlines your workflow.</p>
 
             <h3>Key Features</h3>
             <div class="feature-grid">
@@ -555,7 +554,7 @@
         <!-- Getting Started Section -->
         <div class="content-section">
             <h2>Getting Started</h2>
-            
+
             <h3>Prerequisites</h3>
             <ul>
                 <li>Unity 2020.3 or later</li>
@@ -563,17 +562,20 @@
             </ul>
 
             <h3>Installation Methods</h3>
-            
+
             <h4 style="color: var(--text-primary); margin-top: 2rem;">Method 1: Unity Package Manager (Recommended)</h4>
             <ol style="margin-left: 2rem; color: var(--text-secondary);">
                 <li style="margin-bottom: 0.5rem;">Open Unity Package Manager</li>
                 <li style="margin-bottom: 0.5rem;">Click the '+' button, select "Add package from git URL"</li>
-                <li style="margin-bottom: 0.5rem;">Paste: <code>https://github.com/cherryland120/animator-trigger-system.git</code></li>
+                <li style="margin-bottom: 0.5rem;">Paste:
+                    <code>https://github.com/cherryland120/animator-trigger-system.git</code></li>
             </ol>
 
             <h4 style="color: var(--text-primary); margin-top: 2rem;">Method 2: Direct Download</h4>
             <ol style="margin-left: 2rem; color: var(--text-secondary);">
-                <li style="margin-bottom: 0.5rem;">Download the .unitypackage from <a href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage" style="color: var(--accent);">tasguard.com</a></li>
+                <li style="margin-bottom: 0.5rem;">Download the .unitypackage from <a
+                        href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage"
+                        style="color: var(--accent);">tasguard.com</a></li>
                 <li style="margin-bottom: 0.5rem;">In Unity: Assets → Import Package → Custom Package</li>
                 <li style="margin-bottom: 0.5rem;">Select the downloaded file and click Import</li>
             </ol>
@@ -581,14 +583,15 @@
             <h4 style="color: var(--text-primary); margin-top: 2rem;">Method 3: Manual Installation</h4>
             <ol style="margin-left: 2rem; color: var(--text-secondary);">
                 <li style="margin-bottom: 0.5rem;">Clone or download the repository</li>
-                <li style="margin-bottom: 0.5rem;">Copy the AnimatorTriggerSystem folder into your Unity project's Assets directory</li>
+                <li style="margin-bottom: 0.5rem;">Copy the AnimatorTriggerSystem folder into your Unity project's
+                    Assets directory</li>
             </ol>
         </div>
 
         <!-- Usage Section -->
         <div class="content-section">
             <h2>Usage Guide</h2>
-            
+
             <h3>Basic Setup</h3>
             <p><strong>Step 1: Add the Component</strong></p>
             <ul>
@@ -610,7 +613,7 @@ LateUpdate    - Evaluates after all Update calls</pre>
             </ul>
 
             <h3>Rule Configuration Examples</h3>
-            
+
             <h4 style="color: var(--text-primary); margin-top: 2rem;">Direct Binding Example</h4>
             <p>Monitor a health value and update animator float:</p>
             <div class="code-block">
@@ -641,7 +644,7 @@ Else Set To (bool): false</pre>
         <!-- Use Cases Section -->
         <div class="content-section">
             <h2>Use Cases</h2>
-            
+
             <div class="three-column-layout">
                 <div class="column">
                     <h4>Character Animation</h4>
@@ -673,7 +676,7 @@ Else Set To (bool): false</pre>
         <!-- Advanced Features Section -->
         <div class="content-section">
             <h2>Advanced Features</h2>
-            
+
             <h3>Supported Property Types</h3>
             <ul>
                 <li><strong>Primitives:</strong> int, float, bool, string</li>
@@ -687,7 +690,7 @@ Else Set To (bool): false</pre>
                 <li>Equals (==)</li>
                 <li>Not Equals (!=)</li>
                 <li>Greater Than (>)</li>
-                <li>Less Than (<)</li>
+                <li>Less Than (<)< /li>
                 <li>Greater or Equal (≥)</li>
                 <li>Less or Equal (≤)</li>
             </ul>
@@ -704,9 +707,10 @@ Else Set To (bool): false</pre>
         <!-- Troubleshooting Section -->
         <div class="content-section">
             <h2>Troubleshooting</h2>
-            
+
             <h3>"Parameter name is empty"</h3>
-            <p><strong>Fix:</strong> Use the dropdown to select a parameter from your Animator Controller. Make sure your Animator has a Controller assigned.</p>
+            <p><strong>Fix:</strong> Use the dropdown to select a parameter from your Animator Controller. Make sure
+                your Animator has a Controller assigned.</p>
 
             <h3>"No public fields/properties"</h3>
             <p><strong>Fix:</strong> Make sure your field is public in your script</p>
@@ -736,7 +740,7 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
             <div class="code-block">
                 <pre>Inspector → Debug → Check "Debug Mode"</pre>
             </div>
-            
+
             <div class="alert">
                 <p><strong>💡 Tip:</strong> Keep Debug Mode off in production for better performance!</p>
             </div>
@@ -761,18 +765,22 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
         <!-- Call to Action Section -->
         <div class="content-section">
             <h2>Get Involved</h2>
-            <p>Contributions are welcome! Whether you want to report bugs, suggest features, or contribute code, feel free to get involved with the project.</p>
-            
+            <p>Contributions are welcome! Whether you want to report bugs, suggest features, or contribute code, feel
+                free to get involved with the project.</p>
+
             <div class="btn-container">
-                <a href="https://github.com/cherryland120/animator-trigger-system" target="_blank" class="btn btn-primary">
+                <a href="https://github.com/cherryland120/animator-trigger-system" target="_blank"
+                    class="btn btn-primary">
                     <i data-lucide="github"></i>
                     View on GitHub
                 </a>
-                <a href="https://github.com/cherryland120/animator-trigger-system/issues" target="_blank" class="btn btn-secondary">
+                <a href="https://github.com/cherryland120/animator-trigger-system/issues" target="_blank"
+                    class="btn btn-secondary">
                     <i data-lucide="bug"></i>
                     Report Issue
                 </a>
-                <a href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage" target="_blank" class="btn btn-secondary">
+                <a href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage"
+                    target="_blank" class="btn btn-secondary">
                     <i data-lucide="download"></i>
                     Download Package
                 </a>
@@ -784,7 +792,8 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <p style="text-align: center; font-style: italic;">I really hope you enjoy it</p>
-                <p style="text-align: right; color: var(--accent); font-weight: 500;">— Anointing Tamunowunari-Tasker</p>
+                <p style="text-align: right; color: var(--accent); font-weight: 500;">— Anointing Tamunowunari-Tasker
+                </p>
             </div>
         </div>
     </div>
@@ -804,4 +813,5 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
         lucide.createIcons();
     </script>
 </body>
+
 </html>

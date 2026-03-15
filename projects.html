@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <title>Projects - Anointing Tamunowunari-Tasker</title>
@@ -14,15 +16,7 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #151515;
-            --text-primary: #e8e8e8;
-            --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #252525;
-        }
+        /* Theme variables are now loaded from /assets/colors.css */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -34,7 +28,7 @@
 
         /* Navigation */
         nav {
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: sticky;
@@ -130,7 +124,7 @@
 
         .project-card:hover .project-image-container {
             border-color: var(--accent);
-            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 8px 30px var(--accent-alpha-15);
         }
 
         .project-image {
@@ -147,7 +141,7 @@
         .project-image-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(10, 10, 10, 0.8) 0%, transparent 50%);
+            background: var(--overlay-gradient);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -222,8 +216,8 @@
 
         .project-tag {
             padding: 0.4rem 1rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: var(--accent-alpha-10);
+            border: 1px solid var(--accent-alpha-20);
             border-radius: 6px;
             color: var(--accent);
             font-size: 0.85rem;
@@ -331,16 +325,16 @@
             try {
                 const response = await fetch('assets/data/projects.json');
                 const projects = await response.json();
-                
+
                 const grid = document.getElementById('projectsGrid');
                 const loading = document.getElementById('loadingState');
-                
+
                 grid.innerHTML = '';
 
                 projects.forEach(project => {
                     const card = document.createElement('div');
                     card.className = 'project-card';
-                    
+
                     // Create links HTML
                     const linksHTML = `
                         <div class="project-links">
@@ -358,7 +352,7 @@
                             ` : ''}
                         </div>
                     `;
-                    
+
                     card.innerHTML = `
                         <div class="project-image-container">
                             <img src="${project.icon}" alt="${project.title}" class="project-image" loading="lazy">
@@ -378,17 +372,17 @@
                             </div>
                         </div>
                     `;
-                    
+
                     grid.appendChild(card);
                 });
 
                 // Hide loading, show grid
                 loading.style.display = 'none';
                 grid.style.display = 'grid';
-                
+
                 // Initialize Lucide icons
                 lucide.createIcons();
-                
+
             } catch (error) {
                 console.error('Error loading projects:', error);
                 const loading = document.getElementById('loadingState');

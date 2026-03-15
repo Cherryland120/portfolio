@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <title>Certifications - Anointing Tamunowunari-Tasker</title>
@@ -14,15 +16,7 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #151515;
-            --text-primary: #e8e8e8;
-            --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #252525;
-        }
+        /* Theme variables are now loaded from /assets/colors.css */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -34,7 +28,7 @@
 
         /* Navigation */
         nav {
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: sticky;
@@ -208,7 +202,7 @@
             right: 1rem;
             width: 20px;
             height: 20px;
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -235,7 +229,7 @@
         .cert-icon {
             width: 48px;
             height: 48px;
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -268,8 +262,8 @@
         }
 
         .cert-credential {
-            background: rgba(59, 130, 246, 0.05);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: var(--accent-alpha-05);
+            border: 1px solid var(--accent-alpha-20);
             border-radius: 6px;
             padding: 0.5rem 0.75rem;
             font-size: 0.85rem;
@@ -286,7 +280,7 @@
         }
 
         .cert-tag {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             color: var(--accent);
             padding: 0.25rem 0.75rem;
             border-radius: 12px;
@@ -404,10 +398,10 @@
             try {
                 const response = await fetch('assets/data/certifications.json');
                 allCertifications = await response.json();
-                
+
                 // Update stats
                 updateStats();
-                
+
                 // Initial render
                 renderCertifications();
             } catch (error) {
@@ -436,8 +430,8 @@
             const grid = document.getElementById('certsGrid');
             grid.innerHTML = '';
 
-            const filtered = filter === 'all' 
-                ? allCertifications 
+            const filtered = filter === 'all'
+                ? allCertifications
                 : allCertifications.filter(cert => cert.category === filter);
 
             if (filtered.length === 0) {
@@ -449,13 +443,13 @@
                 const hasLink = cert.link && cert.link.trim() !== '';
                 const card = document.createElement('a');
                 card.className = hasLink ? 'cert-card clickable' : 'cert-card not-available';
-                
+
                 if (hasLink) {
                     card.href = cert.link;
                     card.target = '_blank';
                     card.rel = 'noopener noreferrer';
                 }
-                
+
                 card.innerHTML = `
                     <div class="cert-header">
                         <div class="cert-icon">
@@ -474,7 +468,7 @@
                     </div>
                     ${hasLink ? '<i data-lucide="external-link" class="link-icon"></i>' : ''}
                 `;
-                
+
                 grid.appendChild(card);
             });
 

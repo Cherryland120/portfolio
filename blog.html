@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <title>Blog | Anointing Tamunowunari-Tasker</title>
     <style>
@@ -13,15 +15,7 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #151515;
-            --text-primary: #e8e8e8;
-            --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #252525;
-        }
+        /* Theme variables are now loaded from /assets/colors.css */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -32,7 +26,7 @@
 
         /* Navigation */
         nav {
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: sticky;
@@ -140,7 +134,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             color: var(--accent);
             padding: 0.5rem 1rem;
             border-radius: 20px;
@@ -274,7 +268,7 @@
         .filter-tag.active {
             border-color: var(--accent);
             color: var(--accent);
-            background: rgba(59, 130, 246, 0.05);
+            background: var(--accent-alpha-05);
         }
 
         .post-count {
@@ -429,7 +423,7 @@
 
             } catch (error) {
                 console.error('Error loading blog posts:', error);
-                document.getElementById('blogGrid').innerHTML = 
+                document.getElementById('blogGrid').innerHTML =
                     '<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Unable to load blog posts. Please try again later.</p>';
             }
         }
@@ -438,10 +432,10 @@
         function loadFeaturedPost(post) {
             const featuredSection = document.getElementById('featuredSection');
             const postDate = new Date(post.date);
-            const formattedDate = postDate.toLocaleDateString('en-US', { 
-                month: 'long', 
-                day: 'numeric', 
-                year: 'numeric' 
+            const formattedDate = postDate.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
             });
 
             // Extract emoji from title or use default
@@ -469,7 +463,7 @@
                     </div>
                 </a>
             `;
-            
+
         }
 
         // Generate filter tags from categories
@@ -512,7 +506,7 @@
             // Filter and display posts
             let filteredPosts = allPosts;
             if (category !== 'all') {
-                filteredPosts = allPosts.filter(post => 
+                filteredPosts = allPosts.filter(post =>
                     post.category.includes(category)
                 );
             }
@@ -539,10 +533,10 @@
 
             postsToDisplay.forEach(post => {
                 const postDate = new Date(post.date);
-                const formattedDate = postDate.toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
+                const formattedDate = postDate.toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
                 });
 
                 const blogPost = document.createElement('a');

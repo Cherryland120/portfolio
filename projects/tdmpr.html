@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <title>Thoracic Disease Classification | Anointing Tamunowunari-Tasker</title>
     <style>
@@ -13,15 +15,7 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #151515;
-            --text-primary: #e8e8e8;
-            --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #252525;
-        }
+        /* Theme variables are now loaded from /assets/colors.css */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -32,7 +26,7 @@
 
         /* Navigation */
         nav {
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: sticky;
@@ -134,7 +128,7 @@
         }
 
         .tag {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             color: var(--accent);
             padding: 0.5rem 1rem;
             border-radius: 20px;
@@ -338,18 +332,18 @@
         }
 
         tr:hover td {
-            background: rgba(59, 130, 246, 0.05);
+            background: var(--accent-alpha-05);
         }
 
         .subclass-cell {
-            background: rgba(59, 130, 246, 0.15);
+            background: var(--accent-alpha-15);
             font-weight: 600;
             color: var(--text-primary);
             vertical-align: middle;
         }
 
         .metrics-cell {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-alpha-10);
             font-weight: 600;
             color: var(--accent);
             vertical-align: middle;
@@ -495,7 +489,7 @@
     <div class="project-header">
         <div class="project-banner">
             <img src="../assets/images/project_images/projects/thoracic_grid.png"
-                 alt="Thoracic Disease Classification System">
+                alt="Thoracic Disease Classification System">
         </div>
         <h1>Development of Classification Model for Thoracic Diseases with Chest X-ray Images Using Deep Convolutional
             Neural Network</h1>
@@ -549,8 +543,7 @@
                 imaging techniques like CT scans or MRIs, CXRs offer a cost-effective and low-radiation alternative.</p>
 
             <div class="content-image">
-                <img src="../assets/images/project_images/projects/packed.png"
-                     alt="Thoracic Disease Examples">
+                <img src="../assets/images/project_images/projects/packed.png" alt="Thoracic Disease Examples">
             </div>
 
             <h3>What We Did</h3>
@@ -559,7 +552,8 @@
                     <p>We propose developing a real-time deep learning-based classification model for thoracic diseases.
                         Three deep convolutional neural network (CNN) models: <strong>MobileNetV3Large</strong>,
                         <strong>ResNet50</strong>, and <strong>EfficientNetB7</strong> were evaluated for classification
-                        of these diseases by 5-way, 4-way, and 3-way approaches.</p>
+                        of these diseases by 5-way, 4-way, and 3-way approaches.
+                    </p>
 
                     <div class="three-column-layout">
                         <div class="column">
@@ -593,8 +587,7 @@
                 </div>
 
                 <div class="content-image" style="margin: 0;">
-                    <img src="../assets/images/project_images/projects/concept.png"
-                         alt="Conceptual Framework">
+                    <img src="../assets/images/project_images/projects/concept.png" alt="Conceptual Framework">
                 </div>
             </div>
 
@@ -630,7 +623,7 @@
 
             <div class="full-width-image">
                 <img src="../assets/images/project_images/projects/Data_Processing_Pipeline.jpg"
-                     alt="Data Processing Pipeline">
+                    alt="Data Processing Pipeline">
             </div>
 
             <h3>Dataset Distribution</h3>

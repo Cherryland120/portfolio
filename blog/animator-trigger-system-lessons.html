@@ -7,6 +7,8 @@
     <meta name="description"
         content="Five lessons I learned turning a personal Unity animation system into a public no-code tool.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
 
     <!-- BLOG METADATA - This will be read by index.html -->
     <meta name="blog:title"
@@ -25,15 +27,7 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #151515;
-            --text-primary: #e8e8e8;
-            --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #252525;
-        }
+        /* Theme variables are now loaded from /assets/colors.css */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -44,7 +38,7 @@
 
         /* Navigation */
         nav {
-            background: rgba(10, 10, 10, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: sticky;
@@ -237,7 +231,7 @@
 
         .back-link:hover {
             border-color: var(--accent);
-            background: rgba(59, 130, 246, 0.05);
+            background: var(--accent-alpha-05);
         }
 
         /* Responsive */
@@ -286,7 +280,8 @@
             <header class="post-header">
                 <h1 class="post-title">From a Single Game Dev Feature to a Public Tool: 5 Lessons I Learned Building a
                     No-Code Unity System</h1>
-                <img src="/assets/images/blog_images/animator_trigger_system/banner.jpg" alt="Animator Trigger System" class="post-image">
+                <img src="/assets/images/blog_images/animator_trigger_system/banner.jpg" alt="Animator Trigger System"
+                    class="post-image">
                 <div class="post-meta">
                     <span>January 3, 2026</span>
                     <span>•</span>
@@ -412,7 +407,8 @@
                     the Inspector, you can see every rule from every script that influences your character's Animator.
                     You can see, for example, a rule using Conditional Logic to check if
                     <code>Movement.speed > 0.1</code> to set "IsRunning," and another rule that checks if
-                    <code>Health.currentHP <= 0</code> to set "IsDead."</p>
+                    <code>Health.currentHP <= 0</code> to set "IsDead."
+                </p>
 
                 <p>This makes your game logic dramatically cleaner, far easier to debug, and more manageable as your
                     project grows. You no longer have to hunt through multiple files to understand why an animation is
