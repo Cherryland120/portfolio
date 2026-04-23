@@ -1617,39 +1617,6 @@
                 if (!response.ok) throw new Error(`API error: ${response.status}`);
                 return await response.json();
             }
-            
-            // Call your PHP proxy instead of GitHub directly
-            const response = await fetch('api/github-proxy.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query, variables })
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Proxy error: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            
-            if (data.errors) {
-                throw new Error(`GraphQL error: ${data.errors[0].message}`);
-            }
-            
-            // Flatten the nested structure
-            const contributions = [];
-            data.data.user.contributionsCollection.contributionCalendar.weeks.forEach(week => {
-                week.contributionDays.forEach(day => {
-                    contributions.push({
-                        date: day.date,
-                        count: day.contributionCount
-                    });
-                });
-            });
-            
-            return contributions;
-        }
 
         // Initialize everything
         loadBlogPosts();
