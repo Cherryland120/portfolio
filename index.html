@@ -1610,34 +1610,13 @@
             }
         }
 
-        // Fetch GitHub contributions via your secure PHP proxy
-        async function fetchGitHubContributions(username) {
-            const today = new Date();
-            const oneYearAgo = new Date(today);
-            oneYearAgo.setFullYear(today.getFullYear() - 1);
-            
-            const query = `
-                query($username: String!, $from: DateTime!, $to: DateTime!) {
-                    user(login: $username) {
-                        contributionsCollection(from: $from, to: $to) {
-                            contributionCalendar {
-                                weeks {
-                                    contributionDays {
-                                        date
-                                        contributionCount
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            `;
-            
-            const variables = {
-                username: username,
-                from: oneYearAgo.toISOString(),
-                to: today.toISOString()
-            };
+            async function fetchGitHubContributions(username) {
+                const response = await fetch(
+                    `https://tasguardapi-production.up.railway.app/api/github-contributions/${username}`
+                );
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
+                return await response.json();
+            }
             
             // Call your PHP proxy instead of GitHub directly
             const response = await fetch('api/github-proxy.php', {
