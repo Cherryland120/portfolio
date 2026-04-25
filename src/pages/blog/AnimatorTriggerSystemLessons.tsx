@@ -18,7 +18,7 @@ export const AnimatorTriggerSystemLessons: React.FC = () => {
  Blog Post 
 <main className="blog-container">
 <article>
-<!-- Post Header -->
+{/* Post Header */}
 <header className="post-header">
 <h1 className="post-title">From a Single Game Dev Feature to a Public Tool: 5 Lessons I Learned Building a
                     No-Code Unity System</h1>
@@ -31,7 +31,7 @@ export const AnimatorTriggerSystemLessons: React.FC = () => {
 <span>Unity, GameDev</span>
 </div>
 </header>
-<!-- Post Content -->
+{/* Post Content */}
 <div className="post-content">
 <h2>Introduction: The Endless "Glue Code" Problem</h2>
 <p>If you've spent any time developing in Unity, you know the drill. You have a character, a UI element,
@@ -145,7 +145,7 @@ export const AnimatorTriggerSystemLessons: React.FC = () => {
 </ul>
 <p>What repetitive task in your own projects could be simplified by a dedicated tool?</p>
 </div>
-<!-- Post Footer -->
+{/* Post Footer */}
 
 </article>
 </main>

@@ -15,8 +15,8 @@ export const ATS: React.FC = () => {
             </div>
             <div className="project-header">
 <div className="project-banner">
-<!-- Add your banner image here -->
-<img alt="Animator Trigger System" onError="this.style.display='none'" src="../assets/images/project_images/projects/ats_pic.png"/>
+{/* Add your banner image here */}
+<img alt="Animator Trigger System" onError={(e) => e.currentTarget.style.display = 'none'} src="../assets/images/project_images/projects/ats_pic.png"/>
 </div>
 <h1>Animator Trigger System</h1>
 <p style={{ 'color': 'var(--text-secondary)', 'fontSize': '1.1rem', 'marginBottom': '1.5rem' }}>
@@ -24,11 +24,11 @@ export const ATS: React.FC = () => {
         </p>
 <div style={{ 'marginBottom': '1.5rem' }}>
 <span className="badge">
-<Package style={{ 'width': '16px', 'height': '16px' } />
+<Package style={{ 'width': '16px', 'height': '16px' }} />
                 Unity 2020.3+
             </span>
 <span className="badge">
-<ShieldCheck style={{ 'width': '16px', 'height': '16px' } />
+<ShieldCheck style={{ 'width': '16px', 'height': '16px' }} />
                 MIT License
             </span>
 </div>
@@ -55,7 +55,7 @@ export const ATS: React.FC = () => {
 </div>
 </div>
 </div><div className="container">
-<!-- Overview Section -->
+{/* Overview Section */}
 <div className="content-section">
 <h2>Project Overview</h2>
 <p>Animator Trigger System is a powerful Unity addon that provides a <strong>no-code solution</strong> for
@@ -92,7 +92,7 @@ export const ATS: React.FC = () => {
 </div>
 </div>
 </div>
-<!-- Getting Started Section -->
+{/* Getting Started Section */}
 <div className="content-section">
 <h2>Getting Started</h2>
 <h3>Prerequisites</h3>
@@ -121,7 +121,7 @@ export const ATS: React.FC = () => {
                     Assets directory</li>
 </ol>
 </div>
-<!-- Usage Section -->
+{/* Usage Section */}
 <div className="content-section">
 <h2>Usage Guide</h2>
 <h3>Basic Setup</h3>
@@ -167,7 +167,7 @@ Then Set To (bool): true
 Else Set To (bool): false</pre>
 </div>
 </div>
-<!-- Use Cases Section -->
+{/* Use Cases Section */}
 <div className="content-section">
 <h2>Use Cases</h2>
 <div className="three-column-layout">
@@ -197,7 +197,7 @@ Else Set To (bool): false</pre>
 </div>
 </div>
 </div>
-<!-- Advanced Features Section -->
+{/* Advanced Features Section */}
 <div className="content-section">
 <h2>Advanced Features</h2>
 <h3>Supported Property Types</h3>
@@ -224,7 +224,7 @@ Else Set To (bool): false</pre>
 <li>Click "Clear All Reflection Caches" if you modify source scripts</li>
 </ul>
 </div>
-<!-- Troubleshooting Section -->
+{/* Troubleshooting Section */}
 <div className="content-section">
 <h2>Troubleshooting</h2>
 <h3>"Parameter name is empty"</h3>
@@ -259,7 +259,7 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
 <p><strong>💡 Tip:</strong> Keep Debug Mode off in production for better performance!</p>
 </div>
 </div>
-<!-- Technical Details Section -->
+{/* Technical Details Section */}
 <div className="content-section">
 <h2>Project Structure</h2>
 <div className="code-block">
@@ -274,7 +274,7 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
     └── AnimatorTriggerSystem.Editor.asmdef</pre>
 </div>
 </div>
-<!-- Call to Action Section -->
+{/* Call to Action Section */}
 <div className="content-section">
 <h2>Get Involved</h2>
 <p>Contributions are welcome! Whether you want to report bugs, suggest features, or contribute code, feel

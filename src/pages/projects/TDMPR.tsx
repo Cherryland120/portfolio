@@ -42,7 +42,7 @@ export const TDMPR: React.FC = () => {
 </div>
 </div>
 </div><div className="container">
-<!-- Overview Section -->
+{/* Overview Section */}
 <div className="content-section">
 <h2>Project Overview</h2>
 <p>A <strong>thoracic disease</strong> is a medical condition in the chest wall region. Accurate thoracic
@@ -123,7 +123,7 @@ export const TDMPR: React.FC = () => {
                 and resolution to construct a sequence of models from EfficientNetB0 to EfficientNetB7, with B7 being
                 the largest and most powerful.</p>
 </div>
-<!-- Technical Implementation -->
+{/* Technical Implementation */}
 <div className="content-section">
 <h2>Technical Implementation</h2>
 <h3>Data Sources</h3>
@@ -224,7 +224,7 @@ export const TDMPR: React.FC = () => {
 <li>4-partitioned SSD of 256052966400 bytes Storage</li>
 </ul>
 </div>
-<!-- Results Section -->
+{/* Results Section */}
 <div className="content-section">
 <h2>Results &amp; Impact</h2>
 <h3>Performance Metrics</h3>
@@ -242,17 +242,17 @@ export const TDMPR: React.FC = () => {
 </tr>
 </thead>
 <tbody>
-<!-- 5-way classification -->
+{/* 5-way classification */}
 <tr>
-<td className="subclass-cell" rowspan="16">5-way classification</td>
-<td className="metrics-cell" rowspan="1">Accuracy</td>
+<td className="subclass-cell" rowSpan={16}>5-way classification</td>
+<td className="metrics-cell" rowSpan={1}>Accuracy</td>
 <td>-</td>
 <td>75.72</td>
 <td>75.2</td>
 <td>73.03</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="5">Precision</td>
+<td className="metrics-cell" rowSpan={5}>Precision</td>
 <td>Atelectasis</td>
 <td>55.71</td>
 <td>57.91</td>
@@ -283,7 +283,7 @@ export const TDMPR: React.FC = () => {
 <td>96.02</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="5">Recall</td>
+<td className="metrics-cell" rowSpan={5}>Recall</td>
 <td>Atelectasis</td>
 <td>80.74</td>
 <td>67.83</td>
@@ -314,7 +314,7 @@ export const TDMPR: React.FC = () => {
 <td>93.66</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="5">F1-score</td>
+<td className="metrics-cell" rowSpan={5}>F1-score</td>
 <td>Atelectasis</td>
 <td>65.93</td>
 <td>62.47</td>
@@ -344,17 +344,17 @@ export const TDMPR: React.FC = () => {
 <td>93.64</td>
 <td>94.82</td>
 </tr>
-<!-- 4-way classification -->
+{/* 4-way classification */}
 <tr>
-<td className="subclass-cell" rowspan="13">4-way classification</td>
-<td className="metrics-cell" rowspan="1">Accuracy</td>
+<td className="subclass-cell" rowSpan={13}>4-way classification</td>
+<td className="metrics-cell" rowSpan={1}>Accuracy</td>
 <td>-</td>
 <td>87.25</td>
 <td>87.08</td>
 <td>88.08</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="4">Precision</td>
+<td className="metrics-cell" rowSpan={4}>Precision</td>
 <td>Atelectasis</td>
 <td>76.76</td>
 <td>78.95</td>
@@ -379,7 +379,7 @@ export const TDMPR: React.FC = () => {
 <td>97.05</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="4">Recall</td>
+<td className="metrics-cell" rowSpan={4}>Recall</td>
 <td>Atelectasis</td>
 <td>76.48</td>
 <td>80.00</td>
@@ -404,7 +404,7 @@ export const TDMPR: React.FC = () => {
 <td>97.05</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="4">F1-score</td>
+<td className="metrics-cell" rowSpan={4}>F1-score</td>
 <td>Atelectasis</td>
 <td>76.62</td>
 <td>79.47</td>
@@ -428,17 +428,17 @@ export const TDMPR: React.FC = () => {
 <td>94.38</td>
 <td>97.05</td>
 </tr>
-<!-- 3-way classification -->
+{/* 3-way classification */}
 <tr>
-<td className="subclass-cell" rowspan="10">3-way classification</td>
-<td className="metrics-cell" rowspan="1">Accuracy</td>
+<td className="subclass-cell" rowSpan={10}>3-way classification</td>
+<td className="metrics-cell" rowSpan={1}>Accuracy</td>
 <td>-</td>
 <td>97.44</td>
 <td>97.88</td>
 <td>96.55</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="3">Precision</td>
+<td className="metrics-cell" rowSpan={3}>Precision</td>
 <td>Atelectasis</td>
 <td>100</td>
 <td>99.66</td>
@@ -457,7 +457,7 @@ export const TDMPR: React.FC = () => {
 <td>95.49</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="3">Recall</td>
+<td className="metrics-cell" rowSpan={3}>Recall</td>
 <td>Atelectasis</td>
 <td>100</td>
 <td>99.65</td>
@@ -476,7 +476,7 @@ export const TDMPR: React.FC = () => {
 <td>94.89</td>
 </tr>
 <tr>
-<td className="metrics-cell" rowspan="3">F1-score</td>
+<td className="metrics-cell" rowSpan={3}>F1-score</td>
 <td>Atelectasis</td>
 <td>100</td>
 <td>99.65</td>
@@ -517,7 +517,7 @@ export const TDMPR: React.FC = () => {
                 at 97.88%, and EfficientNetB7 at 96.55%. Precision for Atelectasis is perfect for MobileNetV3Large and
                 ResNet50, achieving 100%, while EfficientNetB7 is close at 99.30%.</p>
 </div>
-<!-- Conclusion Section -->
+{/* Conclusion Section */}
 <div className="content-section">
 <h2>Conclusion</h2>
 <p>Key findings highlighted the superior performance of MobileNetV3Large in terms of computational
@@ -549,7 +549,7 @@ export const TDMPR: React.FC = () => {
 <div className="column"></div>
 </div>
 </div>
-<!-- Call to Action -->
+{/* Call to Action */}
 <div className="content-section">
 <h2>Get Involved</h2>
 <p>Interested in learning more about this project or discussing similar medical AI challenges? Feel free to
