@@ -38,7 +38,7 @@ export const SBRL: React.FC = () => {
 </div>
 </div>
 </div><div className="container">
-<!-- Overview Section -->
+{/* Overview Section */}
 <div className="content-section">
 <h2>Project Overview</h2>
 <p>The Petroleum Fraud Detection System is an advanced machine learning solution designed to identify and prevent fraudulent activities in petroleum plants. This project leverages state-of-the-art deep learning techniques to analyze operational data and detect anomalies that indicate potential fraud.</p>
@@ -68,7 +68,7 @@ export const SBRL: React.FC = () => {
 <li>Comprehensive testing and validation using historical fraud cases</li>
 </ul>
 </div>
-<!-- Technical Details Section -->
+{/* Technical Details Section */}
 <div className="content-section">
 <h2>Technical Implementation</h2>
 <h3>Data Processing Pipeline</h3>
@@ -94,7 +94,7 @@ export const SBRL: React.FC = () => {
 <li><strong>Docker</strong> - Containerization for deployment</li>
 </ul>
 </div>
-<!-- Results Section -->
+{/* Results Section */}
 <div className="content-section">
 <h2>Results &amp; Impact</h2>
 <h3>Performance Metrics</h3>
@@ -117,7 +117,7 @@ export const SBRL: React.FC = () => {
                 [Results Dashboard Screenshot - Add your image here]
             </div>
 </div>
-<!-- Lessons Learned Section -->
+{/* Lessons Learned Section */}
 <div className="content-section">
 <h2>Lessons Learned</h2>
 <p>This project provided valuable insights into developing production-ready machine learning systems:</p>
@@ -128,7 +128,7 @@ export const SBRL: React.FC = () => {
 <li><strong>Continuous Monitoring</strong> - Implementing monitoring and retraining pipelines ensures the model adapts to evolving fraud patterns.</li>
 </ul>
 </div>
-<!-- Call to Action -->
+{/* Call to Action */}
 <div className="content-section">
 <h2>Get Involved</h2>
 <p>Interested in learning more about this project or discussing similar fraud detection challenges? Feel free to reach out or check out the code repository.</p>
