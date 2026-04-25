@@ -1,12 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Anointing Tamunowunari-Tasker | Portfolio</title>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/colors.css">
+    <script src="/assets/theme.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
-<<<<<<< HEAD
     <link rel="icon" type="image/jpg" href="/assets/images/favicon.jpg">
     <title>Anointing Tamunowunari-Tasker</title>
     <style>
@@ -1609,13 +1610,67 @@
             }
         }
 
-            async function fetchGitHubContributions(username) {
-                const response = await fetch(
-                    `https://tasguardapi-production.up.railway.app/api/github-contributions/${username}`
-                );
-                if (!response.ok) throw new Error(`API error: ${response.status}`);
-                return await response.json();
+        // Fetch GitHub contributions via your secure PHP proxy
+        async function fetchGitHubContributions(username) {
+            const today = new Date();
+            const oneYearAgo = new Date(today);
+            oneYearAgo.setFullYear(today.getFullYear() - 1);
+            
+            const query = `
+                query($username: String!, $from: DateTime!, $to: DateTime!) {
+                    user(login: $username) {
+                        contributionsCollection(from: $from, to: $to) {
+                            contributionCalendar {
+                                weeks {
+                                    contributionDays {
+                                        date
+                                        contributionCount
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            `;
+            
+            const variables = {
+                username: username,
+                from: oneYearAgo.toISOString(),
+                to: today.toISOString()
+            };
+            
+            // Call your PHP proxy instead of GitHub directly
+            const response = await fetch('api/github-proxy.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query, variables })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Proxy error: ${response.status}`);
             }
+            
+            const data = await response.json();
+            
+            if (data.errors) {
+                throw new Error(`GraphQL error: ${data.errors[0].message}`);
+            }
+            
+            // Flatten the nested structure
+            const contributions = [];
+            data.data.user.contributionsCollection.contributionCalendar.weeks.forEach(week => {
+                week.contributionDays.forEach(day => {
+                    contributions.push({
+                        date: day.date,
+                        count: day.contributionCount
+                    });
+                });
+            });
+            
+            return contributions;
+        }
 
         // Initialize everything
         loadBlogPosts();
@@ -1625,11 +1680,4 @@
     </script>
 </body>
 
-=======
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
->>>>>>> Moving-Plain-JS-to-React
 </html>
