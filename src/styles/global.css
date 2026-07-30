@@ -992,3 +992,60 @@
             }
         }
 
+
+        /* Spin animation for loaders */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Article body typography */
+        .article-body {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        .article-body h1, .article-body h2, .article-body h3, .article-body h4 {
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        .article-body h1 { font-size: 2rem; }
+        .article-body h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        .article-body h3 { font-size: 1.25rem; }
+        .article-body p { margin: 0 0 1.5rem; }
+        .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+        .article-body a:hover { opacity: 0.8; }
+        .article-body ul, .article-body ol { padding-left: 1.75rem; margin-bottom: 1.5rem; }
+        .article-body li { margin-bottom: 0.4rem; }
+        .article-body blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 0.75rem 1.25rem;
+            margin: 1.5rem 0;
+            background: var(--accent-alpha-05);
+            border-radius: 0 8px 8px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .article-body code {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.15em 0.4em;
+            font-size: 0.9em;
+            font-family: 'Fira Code', monospace;
+        }
+        .article-body pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .article-body pre code { background: none; border: none; padding: 0; }
+        .article-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .article-body th, .article-body td { border: 1px solid var(--border); padding: 0.65rem 1rem; text-align: left; }
+        .article-body th { background: var(--bg-secondary); font-weight: 600; }
+        .article-body img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+        .article-body hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }

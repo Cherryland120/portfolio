@@ -1,29 +1,47 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
 import { Blog } from './pages/Blog';
+import { BlogPost } from './pages/BlogPost';
 import { Certifications } from './pages/Certifications';
 import { ATS } from './pages/projects/ATS';
 import { TDMPR } from './pages/projects/TDMPR';
 import { SBRL } from './pages/projects/SBRL';
 import { AnimatorTriggerSystemLessons } from './pages/blog/AnimatorTriggerSystemLessons';
 import { NotFound } from './pages/NotFound';
-
-// Import individual project and blog pages if available
-// For now we will setup route placeholders, or you can add them below.
+import { AdminLogin } from './pages/admin/AdminLogin';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { PostEditor } from './pages/admin/PostEditor';
 
 function App() {
   return (
     <ThemeProvider>
+      <AuthProvider>
         <BrowserRouter>
             <Routes>
+                {/* Admin routes — outside of Layout, standalone */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute><AdminDashboard /></ProtectedRoute>
+                } />
+                <Route path="/admin/new" element={
+                  <ProtectedRoute><PostEditor /></ProtectedRoute>
+                } />
+                <Route path="/admin/edit/:slug" element={
+                  <ProtectedRoute><PostEditor /></ProtectedRoute>
+                } />
+
+                {/* Public routes — inside Layout */}
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path="projects" element={<Projects />} />
                     <Route path="blog" element={<Blog />} />
+                    <Route path="blog/:slug" element={<BlogPost />} />
                     <Route path="certifications" element={<Certifications />} />
                     <Route path="projects/ats" element={<ATS />} />
                     <Route path="projects/tdmpr" element={<TDMPR />} />
@@ -33,6 +51,7 @@ function App() {
                 </Route>
             </Routes>
         </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
