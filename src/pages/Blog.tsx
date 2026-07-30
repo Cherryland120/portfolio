@@ -122,21 +122,21 @@ export const Blog: React.FC = () => {
             <div className="post-count">{filteredPosts.length} posts</div>
           </div>
 
-          <div className="filter-tags" style={{ marginBottom: "2rem" }}>
-            <div
-              className={`filter-tag ${currentFilter === "all" ? "active" : ""}`}
+          <div className="tab-list" style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '2rem' }}>
+            <button
+              className={`tab-button ${currentFilter === "all" ? "active" : ""}`}
               onClick={() => handleFilter("all")}
             >
               All
-            </div>
+            </button>
             {categories.map((cat) => (
-              <div
+              <button
                 key={cat}
-                className={`filter-tag ${currentFilter === cat ? "active" : ""}`}
+                className={`tab-button ${currentFilter === cat ? "active" : ""}`}
                 onClick={() => handleFilter(cat)}
               >
                 {cat}
-              </div>
+              </button>
             ))}
           </div>
 

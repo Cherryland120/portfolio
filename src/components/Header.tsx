@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
                 ) : (
                     <Link to="/" className="back-link">
                         <ArrowLeft size={18} />
-                        Back to Home
+                         Back to Home
                     </Link>
                 )}
                 <ThemeToggle />
