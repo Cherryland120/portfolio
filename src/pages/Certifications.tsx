@@ -54,60 +54,60 @@ export const Certifications: React.FC = () => {
 
   return (
     <>
-      <section className="header">
+      <section className="hero" style={{ paddingBottom: '2rem' }}>
         <h1>Professional Certifications</h1>
-        <p className="header-subtitle">
+        <p className="hero-subtitle">
           A comprehensive collection of verified credentials and achievements in
           AI, machine learning, and software engineering
         </p>
 
-        <div className="stats">
-          <div className="stat-item">
-            <span className="stat-number">{stats.total}</span>
-            <span className="stat-label">Total Certifications</span>
+        <div className="github-summary" style={{ marginTop: '2rem' }}>
+          <div className="stat-card">
+            <span className="stat-value">{stats.total}</span>
+            <span className="stat-label" style={{ display: 'block' }}>Total Certifications</span>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">{stats.providers}</span>
-            <span className="stat-label">Providers</span>
+          <div className="stat-card">
+            <span className="stat-value">{stats.providers}</span>
+            <span className="stat-label" style={{ display: 'block' }}>Providers</span>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">2023-2025</span>
-            <span className="stat-label">Time Period</span>
+          <div className="stat-card">
+            <span className="stat-value">2023-2025</span>
+            <span className="stat-label" style={{ display: 'block' }}>Time Period</span>
           </div>
         </div>
       </section>
 
-      <section className="filter-section">
-        <div className="filter-tabs">
-          <button
-            className={`filter-btn ${currentFilter === "all" ? "active" : ""}`}
-            onClick={() => handleFilter("all")}
-          >
-            All Certifications
-          </button>
-          <button
-            className={`filter-btn ${currentFilter === "ibm" ? "active" : ""}`}
-            onClick={() => handleFilter("ibm")}
-          >
-            IBM
-          </button>
-          <button
-            className={`filter-btn ${currentFilter === "atlassian" ? "active" : ""}`}
-            onClick={() => handleFilter("atlassian")}
-          >
-            Atlassian
-          </button>
-          <button
-            className={`filter-btn ${currentFilter === "other" ? "active" : ""}`}
-            onClick={() => handleFilter("other")}
-          >
-            Other
-          </button>
+      <section className="section" style={{ paddingTop: '2rem', borderTop: 'none' }}>
+        <div className="tabs">
+          <div className="tab-list" style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <button
+              className={`tab-button ${currentFilter === "all" ? "active" : ""}`}
+              onClick={() => handleFilter("all")}
+            >
+              All Certifications
+            </button>
+            <button
+              className={`tab-button ${currentFilter === "ibm" ? "active" : ""}`}
+              onClick={() => handleFilter("ibm")}
+            >
+              IBM
+            </button>
+            <button
+              className={`tab-button ${currentFilter === "atlassian" ? "active" : ""}`}
+              onClick={() => handleFilter("atlassian")}
+            >
+              Atlassian
+            </button>
+            <button
+              className={`tab-button ${currentFilter === "other" ? "active" : ""}`}
+              onClick={() => handleFilter("other")}
+            >
+              Other
+            </button>
+          </div>
         </div>
-      </section>
 
-      <section className="certifications-container">
-        <div className="certifications-grid">
+        <div className="projects-grid">
           {filteredCerts.length === 0 ? (
             <p style={{ color: "var(--text-secondary)" }}>
               No certifications found in this category.

@@ -6,12 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
 dist
 dist-ssr
 *.local
-
 # Editor directories and files
 .vscode/*
 .venv/*
@@ -23,3 +21,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+tempo/.tempo/
+tempo/node_modules/
+tempo/dist/

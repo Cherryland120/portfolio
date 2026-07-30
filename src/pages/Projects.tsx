@@ -23,15 +23,15 @@ export const Projects: React.FC = () => {
 
   return (
     <>
-      <section className="header">
+      <section className="hero" style={{ paddingBottom: '2rem' }}>
         <h1>my projects.</h1>
-        <p className="header-subtitle">
+        <p className="hero-subtitle">
           A collection of projects I've built, ranging from AI systems to game
           development
         </p>
       </section>
 
-      <section className="projects-container">
+      <section className="section" style={{ paddingTop: '2rem', borderTop: 'none' }}>
         {loading && (
           <div className="loading">
             <div className="loading-spinner"></div>

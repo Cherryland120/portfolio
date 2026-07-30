@@ -466,6 +466,22 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* GitHub Activity */}
+      <section className="section" id="github">
+        <div className="section-header">
+          <h2 className="section-title">github activity</h2>
+        </div>
+        <div className="github-stats-container">
+          <div className="contribution-graph" style={{ display: 'flex', justifyContent: 'center', background: 'transparent', border: 'none', padding: '0' }}>
+            <img 
+              src="https://raw.githubusercontent.com/Cherryland120/Cherryland120/output/github-contribution-grid-snake.svg" 
+              alt="GitHub Contribution Graph" 
+              style={{ width: '100%', maxWidth: '900px' }} 
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Contact */}
       <section className="section" id="contact">
         <div className="section-header">

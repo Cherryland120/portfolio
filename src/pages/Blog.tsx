@@ -69,15 +69,15 @@ export const Blog: React.FC = () => {
 
   return (
     <>
-      <div className="page-header">
+      <section className="hero" style={{ paddingBottom: '2rem' }}>
         <h1>blog & articles</h1>
-        <p>
+        <p className="hero-subtitle">
           Thoughts on AI, machine learning, software engineering, and my journey
           in tech
         </p>
-      </div>
+      </section>
 
-      <div className="container">
+      <section className="section" style={{ paddingTop: '2rem', borderTop: 'none' }}>
         {featuredPost && (
           <div className="featured-section">
             <div className="section-label">Featured Post</div>
@@ -183,7 +183,7 @@ export const Blog: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </section>
     </>
   );
 };
