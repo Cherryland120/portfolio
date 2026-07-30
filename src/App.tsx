@@ -10,6 +10,7 @@ import { ATS } from './pages/projects/ATS';
 import { TDMPR } from './pages/projects/TDMPR';
 import { SBRL } from './pages/projects/SBRL';
 import { AnimatorTriggerSystemLessons } from './pages/blog/AnimatorTriggerSystemLessons';
+import { NotFound } from './pages/NotFound';
 
 // Import individual project and blog pages if available
 // For now we will setup route placeholders, or you can add them below.
@@ -28,6 +29,7 @@ function App() {
                     <Route path="projects/tdmpr" element={<TDMPR />} />
                     <Route path="projects/sbrl" element={<SBRL />} />
                     <Route path="blog/animator-trigger-system-lessons" element={<AnimatorTriggerSystemLessons />} />
+                    <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
         </BrowserRouter>

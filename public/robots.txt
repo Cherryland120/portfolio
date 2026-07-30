@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anointing.tasguard.com/sitemap.xml
