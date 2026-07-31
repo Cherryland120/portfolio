@@ -7,6 +7,7 @@
     "status": "published",
     "date": "2026-01-03",
     "readTime": "8 min read",
+    "image": "/assets/images/blog_images/animator_trigger_system/banner.jpg",
     "metaTitle": "5 Lessons Building a No-Code Unity Animator Tool",
     "metaDescription": "Five lessons I learned turning a personal Unity animation system into a public no-code tool — from battling the Inspector UI to the single keyword that broke everything."
   }

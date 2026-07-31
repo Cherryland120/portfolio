@@ -14,6 +14,7 @@ interface Post {
   readTime: string;
   metaTitle?: string;
   metaDescription?: string;
+  image?: string;
   content: string;
 }
 
@@ -97,9 +98,19 @@ export const BlogPost: React.FC = () => {
           </span>
         </div>
         {post.excerpt && (
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '680px', lineHeight: 1.7 }}>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '680px', lineHeight: 1.7, marginBottom: '2rem' }}>
             {post.excerpt}
           </p>
+        )}
+        
+        {post.image && (
+          <div style={{ marginTop: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
+            <img 
+              src={post.image} 
+              alt={post.title} 
+              style={{ width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', display: 'block' }} 
+            />
+          </div>
         )}
       </section>
 
