@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "title": "From a Single Game Dev Feature to a Public Tool: 5 Lessons I Learned Building a No-Code Unity System",
+    "slug": "animator-trigger-system-lessons",
+    "excerpt": "Five lessons I learned turning a personal Unity animation system into a public no-code tool — from battling the Inspector UI to the single keyword that broke everything.",
+    "category": "Unity, GameDev",
+    "status": "published",
+    "date": "2026-01-03",
+    "readTime": "8 min read",
+    "metaTitle": "5 Lessons Building a No-Code Unity Animator Tool",
+    "metaDescription": "Five lessons I learned turning a personal Unity animation system into a public no-code tool — from battling the Inspector UI to the single keyword that broke everything."
+  }
+]
