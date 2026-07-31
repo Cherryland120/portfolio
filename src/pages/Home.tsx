@@ -10,7 +10,7 @@ interface BlogPost {
   category: string;
   date: string;
   readTime: string;
-  url: string;
+  slug: string;
 }
 
 export const Home: React.FC = () => {
@@ -59,7 +59,7 @@ export const Home: React.FC = () => {
       .catch((err) => console.error("Error loading projects:", err));
 
     // Fetch blog posts
-    fetch("/blog/posts.json")
+    fetch("/api/posts")
       .then((res) => res.json())
       .then((data: BlogPost[]) => {
         data.sort(
@@ -79,7 +79,7 @@ export const Home: React.FC = () => {
             category: "AI/ML",
             date: "2025-12-15",
             readTime: "8 min read",
-            url: "#",
+            slug: "#",
           },
         ]);
       });
@@ -424,7 +424,7 @@ export const Home: React.FC = () => {
             );
             return (
               <Link
-                to={post.url.replace(".html", "")}
+                to={post.slug === "#" ? "#" : `/blog/${post.slug}`}
                 key={idx}
                 className="blog-post"
               >
