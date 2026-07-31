@@ -9,9 +9,6 @@ import { Projects } from './pages/Projects';
 import { Blog } from './pages/Blog';
 import { BlogPost } from './pages/BlogPost';
 import { Certifications } from './pages/Certifications';
-import { ATS } from './pages/projects/ATS';
-import { TDMPR } from './pages/projects/TDMPR';
-import { SBRL } from './pages/projects/SBRL';
 import { NotFound } from './pages/NotFound';
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
@@ -51,10 +48,6 @@ function App() {
                     <Route path="blog/:slug" element={<BlogPost />} />
                     <Route path="certifications" element={<Certifications />} />
                     <Route path="projects/:slug" element={<ProjectDetails />} />
-                    {/* Old routes kept temporarily to ensure nothing breaks during transition, will be removed soon */}
-                    <Route path="projects/ats" element={<ATS />} />
-                    <Route path="projects/tdmpr" element={<TDMPR />} />
-                    <Route path="projects/sbrl" element={<SBRL />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
