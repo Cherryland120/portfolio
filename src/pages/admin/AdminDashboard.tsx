@@ -20,6 +20,7 @@ export const AdminDashboard: React.FC = () => {
   const [items, setItems] = useState<PostMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [deleteModal, setDeleteModal] = useState<{ slug: string; title: string } | null>(null);
   const [toggling, setToggling] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'posts' | 'projects'>('posts');
 
@@ -38,9 +39,11 @@ export const AdminDashboard: React.FC = () => {
 
   useEffect(() => { fetchData(); }, [activeTab]);
 
-  const handleDelete = async (slug: string, title: string) => {
-    if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+  const confirmDelete = async () => {
+    if (!deleteModal) return;
+    const { slug } = deleteModal;
     setDeleting(slug);
+    setDeleteModal(null);
     try {
       const endpoint = activeTab === 'posts' ? `/api/posts/${slug}` : `/api/projects/${slug}`;
       const res = await fetch(endpoint, { method: 'DELETE', headers: authHeader });
@@ -229,7 +232,7 @@ export const AdminDashboard: React.FC = () => {
                     <Edit2 size={16} />
                   </Link>
                   <button
-                    onClick={() => handleDelete(item.slug, item.title)}
+                    onClick={() => setDeleteModal({ slug: item.slug, title: item.title })}
                     disabled={deleting === item.slug}
                     title="Delete"
                     style={{
@@ -246,6 +249,59 @@ export const AdminDashboard: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div style={{
+            background: 'var(--bg-secondary)', border: '1px solid var(--border)',
+            borderRadius: '16px', padding: '2rem', maxWidth: '400px', width: '90%',
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)', textAlign: 'center'
+          }}>
+            <div style={{
+              width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255, 59, 48, 0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem',
+              color: 'var(--error)'
+            }}>
+              <Trash2 size={24} />
+            </div>
+            <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.25rem', color: 'var(--text-primary)' }}>Confirm Deletion</h2>
+            <p style={{ margin: '0 0 2rem', color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+              Are you sure you want to delete <strong>"{deleteModal.title}"</strong>? This action cannot be undone.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button
+                onClick={() => setDeleteModal(null)}
+                style={{
+                  padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid var(--border)',
+                  background: 'transparent', color: 'var(--text-primary)', fontSize: '0.9rem',
+                  fontWeight: 600, cursor: 'pointer', flex: 1, transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                style={{
+                  padding: '0.75rem 1.5rem', borderRadius: '8px', border: 'none',
+                  background: 'var(--error)', color: '#fff', fontSize: '0.9rem',
+                  fontWeight: 600, cursor: 'pointer', flex: 1, transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
