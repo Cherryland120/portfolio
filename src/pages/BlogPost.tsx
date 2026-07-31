@@ -104,21 +104,33 @@ export const BlogPost: React.FC = () => {
         )}
         
         {post.image && (
-          <div style={{ marginTop: '2.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <img 
-              src={post.image} 
-              alt={post.title} 
-              style={{ 
-                width: '100%', 
-                maxWidth: '720px', 
-                maxHeight: '380px', 
-                objectFit: 'cover', 
-                objectPosition: 'center',
-                borderRadius: '12px', 
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)', 
-                display: 'block' 
-              }} 
-            />
+          <div style={{ 
+            marginTop: '2.5rem', 
+            marginBottom: '1rem',
+            width: '100%', 
+            display: 'flex', 
+            justifyContent: 'center' 
+          }}>
+            <div style={{
+              width: '100%',
+              maxWidth: '600px',
+              height: '320px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
+            }}>
+              <img 
+                src={post.image} 
+                alt={post.title} 
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover', 
+                  objectPosition: 'center',
+                  display: 'block' 
+                }} 
+              />
+            </div>
           </div>
         )}
       </section>
