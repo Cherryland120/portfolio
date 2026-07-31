@@ -74,16 +74,16 @@ export const BlogPost: React.FC = () => {
   return (
     <>
       {/* Article Header */}
-      <section className="hero" style={{ paddingBottom: '1.5rem' }}>
+      <section className="hero" style={{ paddingBottom: '1.5rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{ marginBottom: '1.5rem' }}>
           <Link to="/blog" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
             <ArrowLeft size={14} /> All articles
           </Link>
         </div>
-        <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', lineHeight: 1.2, marginBottom: '1.25rem' }}>
+        <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', lineHeight: 1.2, marginBottom: '1.25rem', maxWidth: '800px' }}>
           {post.title}
         </h1>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Tag size={14} /> {post.category}
           </span>
@@ -98,7 +98,7 @@ export const BlogPost: React.FC = () => {
           </span>
         </div>
         {post.excerpt && (
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '680px', lineHeight: 1.7, marginBottom: '2rem' }}>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '680px', lineHeight: 1.7, marginBottom: '2rem', textAlign: 'center' }}>
             {post.excerpt}
           </p>
         )}
@@ -138,7 +138,7 @@ export const BlogPost: React.FC = () => {
       {/* Article Content */}
       <section className="section" style={{ paddingTop: '2rem', borderTop: 'none' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <div className="article-body">
+          <div className="article-body" style={{ textAlign: 'justify' }}>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {post.content}
             </ReactMarkdown>

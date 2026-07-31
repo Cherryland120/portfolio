@@ -110,25 +110,54 @@ export const PostEditor: React.FC = () => {
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
       {/* Top bar */}
       <div style={{
-        background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)',
+        background: 'rgba(15, 15, 15, 0.75)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '0.875rem 1.5rem', display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', gap: '1rem', position: 'sticky', top: 0, zIndex: 100,
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.3)'
       }}>
-        <button onClick={() => navigate('/admin')} className="btn btn-secondary" style={{ gap: '0.5rem' }}>
+        <button onClick={() => navigate('/admin')} style={{ 
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          background: 'transparent', border: '1px solid transparent',
+          color: 'var(--text-secondary)', padding: '0.5rem 0.5rem', borderRadius: '8px',
+          fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.2s ease'
+        }}
+        onMouseOver={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; }}
+        onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; }}>
           <ArrowLeft size={16} /> Back
         </button>
         <div style={{ flex: 1, textAlign: 'center' }}>
-          <span style={{ fontWeight: 600, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+          <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.95rem', letterSpacing: '0.02em' }}>
             {isEditing ? `Editing: ${title}` : 'New Post'}
           </span>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          {saved && <span style={{ color: 'var(--success)', fontSize: '0.875rem', alignSelf: 'center' }}>✓ Saved!</span>}
-          <button onClick={() => handleSave('draft')} disabled={loading} className="btn btn-secondary" style={{ gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          {saved && <span style={{ color: 'var(--success)', fontSize: '0.875rem', fontWeight: 500, marginRight: '0.5rem' }}>✓ Saved!</span>}
+          <button onClick={() => handleSave('draft')} disabled={loading} style={{ 
+            display: 'flex', alignItems: 'center', gap: '0.5rem',
+            background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: 'var(--text-primary)', padding: '0.5rem 1.25rem', borderRadius: '24px',
+            fontSize: '0.875rem', fontWeight: 500, cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => { if (!loading) { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'; } }}
+          onMouseOut={(e) => { if (!loading) { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; } }}
+          >
             {loading && status === 'draft' ? <Loader size={14} style={{ animation: 'spin 1s linear infinite' }} /> : <Save size={14} />}
             Save Draft
           </button>
-          <button onClick={() => handleSave('published')} disabled={loading} className="btn btn-primary" style={{ gap: '0.5rem' }}>
+          <button onClick={() => handleSave('published')} disabled={loading} style={{ 
+            display: 'flex', alignItems: 'center', gap: '0.5rem',
+            background: 'linear-gradient(135deg, var(--accent) 0%, #00d2ff 100%)', border: 'none',
+            color: '#fff', padding: '0.5rem 1.5rem', borderRadius: '24px',
+            fontSize: '0.875rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'all 0.2s ease', boxShadow: '0 4px 15px rgba(0, 210, 255, 0.3)'
+          }}
+          onMouseOver={(e) => { if (!loading) { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 210, 255, 0.4)'; } }}
+          onMouseOut={(e) => { if (!loading) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 210, 255, 0.3)'; } }}
+          >
             {loading && status === 'published' ? <Loader size={14} style={{ animation: 'spin 1s linear infinite' }} /> : <Eye size={14} />}
             Publish
           </button>
@@ -149,19 +178,16 @@ export const PostEditor: React.FC = () => {
           {/* Status toggle */}
           <div>
             <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Status</label>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {(['draft', 'published'] as const).map(s => (
-                <button key={s} onClick={() => setStatus(s)} style={{
-                  flex: 1, padding: '0.5rem', borderRadius: '8px', cursor: 'pointer',
-                  border: `1px solid ${status === s ? 'var(--accent)' : 'var(--border)'}`,
-                  background: status === s ? 'var(--accent-alpha-10)' : 'transparent',
-                  color: status === s ? 'var(--accent)' : 'var(--text-secondary)',
-                  fontWeight: status === s ? 600 : 400, fontSize: '0.85rem', transition: 'all 0.2s',
-                }}>
-                  {s === 'published' ? <><Eye size={12} style={{ display: 'inline', marginRight: 4 }} />Published</> : <><EyeOff size={12} style={{ display: 'inline', marginRight: 4 }} />Draft</>}
-                </button>
-              ))}
-            </div>
+            <select value={status} onChange={(e) => setStatus(e.target.value as 'draft' | 'published')}
+              style={{
+                width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)',
+                border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)',
+                fontSize: '0.9rem', outline: 'none', cursor: 'pointer'
+              }}
+            >
+              <option value="draft">Draft (Hidden)</option>
+              <option value="published">Published (Live)</option>
+            </select>
           </div>
 
           {/* Title */}

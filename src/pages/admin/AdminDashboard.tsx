@@ -79,23 +79,46 @@ export const AdminDashboard: React.FC = () => {
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Header */}
       <div style={{
-        background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)',
+        background: 'rgba(15, 15, 15, 0.75)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '1rem 2rem', display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100,
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.3)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <FileText size={20} color="var(--accent)" />
-          <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Blog CMS</h1>
+          <h1 style={{ fontSize: '1.2rem', margin: 0, color: 'var(--text-primary)', letterSpacing: '0.02em' }}>Blog CMS</h1>
           <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
             {published.length} published · {drafts.length} drafts
           </span>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <Link to="/admin/new" className="btn btn-primary" style={{ gap: '0.5rem' }}>
-            <PlusCircle size={16} /> New Post
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <Link to="/admin/new" style={{ 
+            display: 'flex', alignItems: 'center', gap: '0.5rem',
+            background: 'linear-gradient(135deg, var(--accent) 0%, #00d2ff 100%)', border: 'none',
+            color: '#fff', padding: '0.5rem 1.25rem', borderRadius: '24px',
+            fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer',
+            transition: 'all 0.2s ease', boxShadow: '0 4px 15px rgba(0, 210, 255, 0.3)',
+            textDecoration: 'none'
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 210, 255, 0.4)'; }}
+          onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 210, 255, 0.3)'; }}
+          >
+            <PlusCircle size={14} /> New Post
           </Link>
-          <button onClick={handleLogout} className="btn btn-secondary" style={{ gap: '0.5rem' }}>
-            <LogOut size={16} /> Log Out
+          <button onClick={handleLogout} style={{ 
+            display: 'flex', alignItems: 'center', gap: '0.5rem',
+            background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: 'var(--text-primary)', padding: '0.5rem 1.25rem', borderRadius: '24px',
+            fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'; }}
+          onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; }}
+          >
+            <LogOut size={14} /> Log Out
           </button>
         </div>
       </div>
