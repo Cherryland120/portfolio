@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
-import { Save, ArrowLeft, Loader, Eye, EyeOff } from 'lucide-react';
+import { Save, ArrowLeft, Loader, Eye } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 function slugify(text: string) {
