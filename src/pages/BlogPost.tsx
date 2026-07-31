@@ -104,11 +104,20 @@ export const BlogPost: React.FC = () => {
         )}
         
         {post.image && (
-          <div style={{ marginTop: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
+          <div style={{ marginTop: '2.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
             <img 
               src={post.image} 
               alt={post.title} 
-              style={{ width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', display: 'block' }} 
+              style={{ 
+                width: '100%', 
+                maxWidth: '720px', 
+                maxHeight: '380px', 
+                objectFit: 'cover', 
+                objectPosition: 'center',
+                borderRadius: '12px', 
+                boxShadow: '0 8px 24px rgba(0,0,0,0.15)', 
+                display: 'block' 
+              }} 
             />
           </div>
         )}
