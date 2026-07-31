@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { Calendar, ArrowLeft, Share2, Link2, Check, ExternalLink, Github } from 'lucide-react';
+import { Calendar, ArrowLeft, Share2, Link2, Check, GitBranch } from 'lucide-react';
 
 interface Project {
   title: string;
@@ -93,7 +93,7 @@ export const ProjectDetails: React.FC = () => {
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
             {project.github && (
                 <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ gap: '0.5rem' }}>
-                    <Github size={16} /> Source Code
+                    <GitBranch size={16} /> Source Code
                 </a>
             )}
         </div>

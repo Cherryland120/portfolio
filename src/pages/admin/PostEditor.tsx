@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import MDEditor, { commands, ICommand } from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
+import type { ICommand } from '@uiw/react-md-editor';
 import { Save, ArrowLeft, Loader, Eye, Code } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
