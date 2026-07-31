@@ -27,3 +27,4 @@ tempo/dist/
 *.env
 .env
 .env.*
+.vercel
