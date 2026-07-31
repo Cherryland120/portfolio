@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { Calendar, Clock, Tag, ArrowLeft, Share2, Link2, Check } from 'lucide-react';
 
 interface Post {
@@ -139,7 +140,10 @@ export const BlogPost: React.FC = () => {
       <section className="section" style={{ paddingTop: '2rem', borderTop: 'none' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
           <div className="article-body" style={{ textAlign: 'justify' }}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+            >
               {post.content}
             </ReactMarkdown>
           </div>
