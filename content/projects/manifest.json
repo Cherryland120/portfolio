@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "ats",
+    "title": "Animator Trigger System",
+    "description": "A scriptless bridge between coding and visual scripting for Unity Animator parameters",
+    "status": "published",
+    "date": "2023-08-01T00:00:00Z",
+    "tags": ["Unity", "C#", "Game Development", "Animation", "Visual Scripting", "No-Code"],
+    "icon": "/assets/images/project_images/projects/ats_pic.png",
+    "github": "https://github.com/cherryland120/animator-trigger-system"
+  },
+  {
+    "slug": "tdmpr",
+    "title": "Thoracic Disease Classification Model",
+    "description": "Development of Classification Model for Thoracic Diseases with Chest X-ray Images Using Deep Convolutional Neural Network",
+    "status": "published",
+    "date": "2025-08-01T00:00:00Z",
+    "tags": ["Python", "TensorFlow", "Keras", "Deep Learning", "Medical Imaging", "CNNs"],
+    "icon": "/assets/images/project_images/projects/thoracic_grid.png"
+  },
+  {
+    "slug": "sbrl",
+    "title": "Petroleum Fraud Detection System",
+    "description": "An advanced machine learning solution designed to identify and prevent fraudulent activities in petroleum plants.",
+    "status": "published",
+    "date": "2025-08-01T00:00:00Z",
+    "tags": ["Python", "TensorFlow", "Keras", "Machine Learning"],
+    "icon": ""
+  }
+]

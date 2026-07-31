@@ -1,61 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { Bug, Package, Mail, Download, ShieldCheck } from 'lucide-react';
-
-
-export const ATS: React.FC = () => {
-    return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-            <div className="back-button" style={{ padding: '2rem 2rem 0' }}>
-                <Link to="/projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent)', textDecoration: 'none' }}>
-                    <ArrowLeft size={18} />
-                    Back to Projects
-                </Link>
-            </div>
-            <div className="project-header">
-<div className="project-banner">
-{/* Add your banner image here */}
-<img alt="Animator Trigger System" onError={(e) => e.currentTarget.style.display = 'none'} src="../assets/images/project_images/projects/ats_pic.png"/>
-</div>
-<h1>Animator Trigger System</h1>
-<p style={{ 'color': 'var(--text-secondary)', 'fontSize': '1.1rem', 'marginBottom': '1.5rem' }}>
-            A scriptless bridge between coding and visual scripting for Unity Animator parameters
-        </p>
-<div style={{ 'marginBottom': '1.5rem' }}>
-<span className="badge">
-<Package style={{ 'width': '16px', 'height': '16px' }} />
-                Unity 2020.3+
-            </span>
-<span className="badge">
-<ShieldCheck style={{ 'width': '16px', 'height': '16px' }} />
-                MIT License
-            </span>
-</div>
-<div className="project-tags">
-<span className="tag">Unity</span>
-<span className="tag">C#</span>
-<span className="tag">Game Development</span>
-<span className="tag">Animation</span>
-<span className="tag">Visual Scripting</span>
-<span className="tag">No-Code</span>
-</div>
-<div className="project-meta">
-<div className="meta-item">
-<span className="meta-label">Type</span>
-<span className="meta-value">Unity Addon / Package</span>
-</div>
-<div className="meta-item">
-<span className="meta-label">Status</span>
-<span className="meta-value">Production Ready</span>
-</div>
-<div className="meta-item">
-<span className="meta-label">License</span>
-<span className="meta-value">MIT Open Source</span>
-</div>
-</div>
-</div><div className="container">
-{/* Overview Section */}
+<!-- Overview Section -->
 <div className="content-section">
 <h2>Project Overview</h2>
 <p>Animator Trigger System is a powerful Unity addon that provides a <strong>no-code solution</strong> for
@@ -92,7 +35,7 @@ export const ATS: React.FC = () => {
 </div>
 </div>
 </div>
-{/* Getting Started Section */}
+<!-- Getting Started Section -->
 <div className="content-section">
 <h2>Getting Started</h2>
 <h3>Prerequisites</h3>
@@ -121,7 +64,7 @@ export const ATS: React.FC = () => {
                     Assets directory</li>
 </ol>
 </div>
-{/* Usage Section */}
+<!-- Usage Section -->
 <div className="content-section">
 <h2>Usage Guide</h2>
 <h3>Basic Setup</h3>
@@ -167,7 +110,7 @@ Then Set To (bool): true
 Else Set To (bool): false</pre>
 </div>
 </div>
-{/* Use Cases Section */}
+<!-- Use Cases Section -->
 <div className="content-section">
 <h2>Use Cases</h2>
 <div className="three-column-layout">
@@ -197,7 +140,7 @@ Else Set To (bool): false</pre>
 </div>
 </div>
 </div>
-{/* Advanced Features Section */}
+<!-- Advanced Features Section -->
 <div className="content-section">
 <h2>Advanced Features</h2>
 <h3>Supported Property Types</h3>
@@ -212,10 +155,10 @@ Else Set To (bool): false</pre>
 <li>Equals (==)</li>
 <li>Not Equals (!=)</li>
 <li>Greater Than (&gt;)</li>
-<li>Less Than (&lt;)&lt; /li&gt;
-                <li>Greater or Equal (≥)</li>
+<li>Less Than (&lt;)</li>
+<li>Greater or Equal (≥)</li>
 <li>Less or Equal (≤)</li>
-</li></ul>
+</ul>
 <h3>Performance Tips</h3>
 <ul>
 <li>Use appropriate Update Mode (FixedUpdate for physics-based values)</li>
@@ -224,7 +167,7 @@ Else Set To (bool): false</pre>
 <li>Click "Clear All Reflection Caches" if you modify source scripts</li>
 </ul>
 </div>
-{/* Troubleshooting Section */}
+<!-- Troubleshooting Section -->
 <div className="content-section">
 <h2>Troubleshooting</h2>
 <h3>"Parameter name is empty"</h3>
@@ -259,7 +202,7 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
 <p><strong>💡 Tip:</strong> Keep Debug Mode off in production for better performance!</p>
 </div>
 </div>
-{/* Technical Details Section */}
+<!-- Technical Details Section -->
 <div className="content-section">
 <h2>Project Structure</h2>
 <div className="code-block">
@@ -274,36 +217,3 @@ private List&lt;GameObject&gt; myList; // Wrong</pre>
     └── AnimatorTriggerSystem.Editor.asmdef</pre>
 </div>
 </div>
-{/* Call to Action Section */}
-<div className="content-section">
-<h2>Get Involved</h2>
-<p>Contributions are welcome! Whether you want to report bugs, suggest features, or contribute code, feel
-                free to get involved with the project.</p>
-<div className="btn-container">
-<a className="btn btn-primary" href="https://github.com/cherryland120/animator-trigger-system" target="_blank">
-<i className="devicon-github-original"  ></i>
-                    View on GitHub
-                </a>
-<a className="btn btn-secondary" href="https://github.com/cherryland120/animator-trigger-system/issues" target="_blank">
-<Bug  />
-                    Report Issue
-                </a>
-<a className="btn btn-secondary" href="https://tasguard.com/projects/downloadables/animator_trigger_system.unitypackage" target="_blank">
-<Download  />
-                    Download Package
-                </a>
-<a className="btn btn-secondary" href="mailto:tasguardtech@gmail.com">
-<Mail  />
-                    Contact Support
-                </a>
-</div>
-<div style={{ 'marginTop': '3rem', 'paddingTop': '2rem', 'borderTop': '1px solid var(--border)' }}>
-<p style={{ 'textAlign': 'center', 'fontStyle': 'italic' }}>I really hope you enjoy it</p>
-<p style={{ 'textAlign': 'right', 'color': 'var(--accent)', 'fontWeight': '500' }}>— Anointing Tamunowunari-Tasker
-                </p>
-</div>
-</div>
-</div>
-        </div>
-    );
-};

@@ -8,10 +8,20 @@ export const Projects: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/assets/data/projects.json")
+    fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
-        setProjects(data);
+        // Adapt API data to ProjectCardProps format
+        const adaptedProjects = data.map((p: any) => ({
+          title: p.title,
+          description: p.description || '',
+          icon: p.icon || '',
+          tags: p.tags || [],
+          github: p.github || undefined,
+          details_page: `/projects/${p.slug}`,
+          isFeatured: false
+        }));
+        setProjects(adaptedProjects);
         setLoading(false);
       })
       .catch((err) => {

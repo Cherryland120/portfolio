@@ -13,12 +13,6 @@ function slugify(text: string) {
     .trim();
 }
 
-function calcReadTime(content: string) {
-  const words = content.trim().split(/\s+/).length;
-  const mins = Math.ceil(words / 200);
-  return `${mins} min read`;
-}
-
 // Custom Inline Code Command for MDEditor
 const codeInlineCommand: ICommand = {
   name: 'codeInline',
@@ -34,7 +28,7 @@ const codeInlineCommand: ICommand = {
   },
 };
 
-export const PostEditor: React.FC = () => {
+export const ProjectEditor: React.FC = () => {
   const { slug } = useParams<{ slug?: string }>();
   const isEditing = !!slug;
   const { token } = useAuth();
@@ -43,12 +37,13 @@ export const PostEditor: React.FC = () => {
   const [title, setTitle] = useState('');
   const [postSlug, setPostSlug] = useState('');
   const [slugLocked, setSlugLocked] = useState(false);
-  const [excerpt, setExcerpt] = useState('');
-  const [category, setCategory] = useState('');
-  const [metaTitle, setMetaTitle] = useState('');
-  const [metaDesc, setMetaDesc] = useState('');
+  const [description, setDescription] = useState('');
+  const [icon, setIcon] = useState('');
+  const [github, setGithub] = useState('');
+  const [tags, setTags] = useState('');
+  
   const [status, setStatus] = useState<'draft' | 'published'>('draft');
-  const [content, setContent] = useState('# Your Post Title\n\nStart writing here...');
+  const [content, setContent] = useState('# Project Title\n\nWrite about your project here...');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEditing);
   const [error, setError] = useState('');
@@ -61,16 +56,16 @@ export const PostEditor: React.FC = () => {
     (async () => {
       setFetching(true);
       try {
-        const res = await fetch(`/api/posts/${slug}`, { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetch(`/api/projects/${slug}`, { headers: { Authorization: `Bearer ${token}` } });
         if (!res.ok) { navigate('/admin'); return; }
         const data = await res.json();
         setTitle(data.title);
         setPostSlug(data.slug);
         setSlugLocked(true);
-        setExcerpt(data.excerpt || '');
-        setCategory(data.category || '');
-        setMetaTitle(data.metaTitle || '');
-        setMetaDesc(data.metaDescription || '');
+        setDescription(data.description || '');
+        setIcon(data.icon || '');
+        setGithub(data.github || '');
+        setTags((data.tags || []).join(', '));
         setStatus(data.status);
         setContent(data.content || '');
       } finally {
@@ -92,14 +87,21 @@ export const PostEditor: React.FC = () => {
     setError('');
     setLoading(true);
     const finalStatus = saveStatus ?? status;
+    
+    const parsedTags = tags.split(',').map(t => t.trim()).filter(Boolean);
+
     const payload = {
-      title, slug: postSlug, excerpt, category: category || 'General',
-      content, status: finalStatus,
-      metaTitle: metaTitle || title, metaDescription: metaDesc || excerpt,
-      readTime: calcReadTime(content),
+      title, 
+      slug: postSlug, 
+      description,
+      icon,
+      github,
+      tags: parsedTags,
+      content, 
+      status: finalStatus,
     };
     try {
-      const url = isEditing ? `/api/posts/${slug}` : '/api/posts';
+      const url = isEditing ? `/api/projects/${slug}` : '/api/projects';
       const method = isEditing ? 'PUT' : 'POST';
       const res = await fetch(url, { method, headers: authHeader, body: JSON.stringify(payload) });
       if (!res.ok) {
@@ -145,7 +147,7 @@ export const PostEditor: React.FC = () => {
         </button>
         <div style={{ flex: 1, textAlign: 'center' }}>
           <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.95rem', letterSpacing: '0.02em' }}>
-            {isEditing ? `Editing: ${title}` : 'New Post'}
+            {isEditing ? `Editing: ${title}` : 'New Project'}
           </span>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -187,7 +189,7 @@ export const PostEditor: React.FC = () => {
           display: 'flex', flexDirection: 'column', gap: '1.25rem',
         }}>
           <h3 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Post Settings
+            Project Settings
           </h3>
 
           {/* Status toggle */}
@@ -209,7 +211,7 @@ export const PostEditor: React.FC = () => {
           <div>
             <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Title *</label>
             <input value={title} onChange={e => handleTitleChange(e.target.value)}
-              placeholder="Post title..."
+              placeholder="Project title..."
               style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.9rem', boxSizing: 'border-box' }}
             />
           </div>
@@ -228,52 +230,38 @@ export const PostEditor: React.FC = () => {
               placeholder="url-slug"
               style={{ width: '100%', padding: '0.65rem 0.875rem', background: (isEditing || slugLocked) ? 'var(--bg-primary)' : 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-secondary)', fontSize: '0.85rem', boxSizing: 'border-box', opacity: (isEditing || slugLocked) ? 0.7 : 1 }}
             />
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
-              /blog/<strong>{postSlug || 'your-slug'}</strong>
-            </p>
           </div>
 
-          {/* Category */}
+          {/* Icon (Image URL) */}
           <div>
-            <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Category</label>
-            <input value={category} onChange={e => setCategory(e.target.value)} placeholder="e.g. AI, Machine Learning"
+            <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Thumbnail Image URL</label>
+            <input value={icon} onChange={e => setIcon(e.target.value)} placeholder="/assets/img/project.jpg"
               style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.9rem', boxSizing: 'border-box' }}
             />
           </div>
 
-          {/* Excerpt */}
+          {/* GitHub URL */}
           <div>
-            <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Excerpt</label>
-            <textarea value={excerpt} onChange={e => setExcerpt(e.target.value)} rows={3} placeholder="Short summary shown in blog list..."
-              style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.875rem', resize: 'vertical', boxSizing: 'border-box' }}
+            <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>GitHub URL</label>
+            <input value={github} onChange={e => setGithub(e.target.value)} placeholder="https://github.com/..."
+              style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.9rem', boxSizing: 'border-box' }}
             />
           </div>
 
-          {/* SEO */}
-          <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.25rem' }}>
-            <h3 style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              SEO
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div>
-                <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Meta Title</label>
-                <input value={metaTitle} onChange={e => setMetaTitle(e.target.value)} placeholder="Leave blank to use post title"
-                  style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.875rem', boxSizing: 'border-box' }}
-                />
-                <p style={{ fontSize: '0.72rem', color: metaTitle.length > 60 ? 'var(--error)' : 'var(--text-secondary)', marginTop: '0.2rem' }}>
-                  {metaTitle.length}/60 chars
-                </p>
-              </div>
-              <div>
-                <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Meta Description</label>
-                <textarea value={metaDesc} onChange={e => setMetaDesc(e.target.value)} rows={3} placeholder="Leave blank to use excerpt"
-                  style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.875rem', resize: 'vertical', boxSizing: 'border-box' }}
-                />
-                <p style={{ fontSize: '0.72rem', color: metaDesc.length > 160 ? 'var(--error)' : 'var(--text-secondary)', marginTop: '0.2rem' }}>
-                  {metaDesc.length}/160 chars
-                </p>
-              </div>
-            </div>
+          {/* Tags */}
+          <div>
+            <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Tags (comma separated)</label>
+            <input value={tags} onChange={e => setTags(e.target.value)} placeholder="React, Unity, WebGL"
+              style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.9rem', boxSizing: 'border-box' }}
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Description</label>
+            <textarea value={description} onChange={e => setDescription(e.target.value)} rows={4} placeholder="Short summary..."
+              style={{ width: '100%', padding: '0.65rem 0.875rem', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.875rem', resize: 'vertical', boxSizing: 'border-box' }}
+            />
           </div>
 
           {error && (

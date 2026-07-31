@@ -16,6 +16,8 @@ import { NotFound } from './pages/NotFound';
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { PostEditor } from './pages/admin/PostEditor';
+import { ProjectEditor } from './pages/admin/ProjectEditor';
+import { ProjectDetails } from './pages/ProjectDetails';
 
 function App() {
   return (
@@ -34,6 +36,12 @@ function App() {
                 <Route path="/admin/edit/:slug" element={
                   <ProtectedRoute><PostEditor /></ProtectedRoute>
                 } />
+                <Route path="/admin/projects/new" element={
+                  <ProtectedRoute><ProjectEditor /></ProtectedRoute>
+                } />
+                <Route path="/admin/projects/edit/:slug" element={
+                  <ProtectedRoute><ProjectEditor /></ProtectedRoute>
+                } />
 
                 {/* Public routes — inside Layout */}
                 <Route path="/" element={<Layout />}>
@@ -42,6 +50,8 @@ function App() {
                     <Route path="blog" element={<Blog />} />
                     <Route path="blog/:slug" element={<BlogPost />} />
                     <Route path="certifications" element={<Certifications />} />
+                    <Route path="projects/:slug" element={<ProjectDetails />} />
+                    {/* Old routes kept temporarily to ensure nothing breaks during transition, will be removed soon */}
                     <Route path="projects/ats" element={<ATS />} />
                     <Route path="projects/tdmpr" element={<TDMPR />} />
                     <Route path="projects/sbrl" element={<SBRL />} />

@@ -15,9 +15,9 @@ function getRepoBase() {
   return { repo, branch };
 }
 
-export async function getManifest() {
+export async function getManifest(type = 'posts') {
   const { repo, branch } = getRepoBase();
-  const url = `${GITHUB_API}/repos/${repo}/contents/content/posts/manifest.json?ref=${branch}`;
+  const url = `${GITHUB_API}/repos/${repo}/contents/content/${type}/manifest.json?ref=${branch}`;
   const res = await fetch(url, { headers: getHeaders() });
   if (res.status === 404) return { sha: null, posts: [] };
   if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
@@ -26,11 +26,11 @@ export async function getManifest() {
   return { sha: data.sha, posts: JSON.parse(content) };
 }
 
-export async function saveManifest(posts, sha) {
+export async function saveManifest(posts, sha, type = 'posts') {
   const { repo, branch } = getRepoBase();
-  const url = `${GITHUB_API}/repos/${repo}/contents/content/posts/manifest.json`;
+  const url = `${GITHUB_API}/repos/${repo}/contents/content/${type}/manifest.json`;
   const content = Buffer.from(JSON.stringify(posts, null, 2)).toString('base64');
-  const body = { message: 'cms: update manifest', content, branch, ...(sha ? { sha } : {}) };
+  const body = { message: `cms: update ${type} manifest`, content, branch, ...(sha ? { sha } : {}) };
   const res = await fetch(url, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(body) });
   if (!res.ok) {
     const err = await res.json();
@@ -39,9 +39,9 @@ export async function saveManifest(posts, sha) {
   return res.ok;
 }
 
-export async function getPostFile(slug) {
+export async function getPostFile(slug, type = 'posts') {
   const { repo, branch } = getRepoBase();
-  const url = `${GITHUB_API}/repos/${repo}/contents/content/posts/${slug}.md?ref=${branch}`;
+  const url = `${GITHUB_API}/repos/${repo}/contents/content/${type}/${slug}.md?ref=${branch}`;
   const res = await fetch(url, { headers: getHeaders() });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
@@ -50,12 +50,12 @@ export async function getPostFile(slug) {
   return { sha: data.sha, content };
 }
 
-export async function savePostFile(slug, content, sha, commitMsg) {
+export async function savePostFile(slug, content, sha, commitMsg, type = 'posts') {
   const { repo, branch } = getRepoBase();
-  const url = `${GITHUB_API}/repos/${repo}/contents/content/posts/${slug}.md`;
+  const url = `${GITHUB_API}/repos/${repo}/contents/content/${type}/${slug}.md`;
   const encoded = Buffer.from(content).toString('base64');
   const body = {
-    message: commitMsg || `cms: save post "${slug}"`,
+    message: commitMsg || `cms: save ${type} "${slug}"`,
     content: encoded,
     branch,
     ...(sha ? { sha } : {}),
@@ -68,10 +68,10 @@ export async function savePostFile(slug, content, sha, commitMsg) {
   return true;
 }
 
-export async function deletePostFile(slug, sha) {
+export async function deletePostFile(slug, sha, type = 'posts') {
   const { repo, branch } = getRepoBase();
-  const url = `${GITHUB_API}/repos/${repo}/contents/content/posts/${slug}.md`;
-  const body = { message: `cms: delete post "${slug}"`, sha, branch };
+  const url = `${GITHUB_API}/repos/${repo}/contents/content/${type}/${slug}.md`;
+  const body = { message: `cms: delete ${type} "${slug}"`, sha, branch };
   const res = await fetch(url, { method: 'DELETE', headers: getHeaders(), body: JSON.stringify(body) });
   return res.ok;
 }
