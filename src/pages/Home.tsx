@@ -41,10 +41,21 @@ export const Home: React.FC = () => {
 
   // -- Fetch data --
   useEffect(() => {
-    // Fetch projects
-    fetch("/assets/data/projects.json")
+    // Fetch projects from CMS API
+    fetch("/api/projects")
       .then((res) => res.json())
-      .then((data: ProjectCardProps[]) => setFeaturedProjects(data.slice(0, 2)))
+      .then((data: any[]) => {
+        const adapted: ProjectCardProps[] = data.slice(0, 2).map((p) => ({
+          title: p.title,
+          description: p.description || '',
+          icon: p.icon || '',
+          tags: p.tags || [],
+          github: p.github || undefined,
+          details_page: `/projects/${p.slug}`,
+          isFeatured: true,
+        }));
+        setFeaturedProjects(adapted);
+      })
       .catch((err) => console.error("Error loading projects:", err));
 
     // Fetch blog posts
