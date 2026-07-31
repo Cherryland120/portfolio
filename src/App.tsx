@@ -12,7 +12,6 @@ import { Certifications } from './pages/Certifications';
 import { ATS } from './pages/projects/ATS';
 import { TDMPR } from './pages/projects/TDMPR';
 import { SBRL } from './pages/projects/SBRL';
-import { AnimatorTriggerSystemLessons } from './pages/blog/AnimatorTriggerSystemLessons';
 import { NotFound } from './pages/NotFound';
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
@@ -46,7 +45,6 @@ function App() {
                     <Route path="projects/ats" element={<ATS />} />
                     <Route path="projects/tdmpr" element={<TDMPR />} />
                     <Route path="projects/sbrl" element={<SBRL />} />
-                    <Route path="blog/animator-trigger-system-lessons" element={<AnimatorTriggerSystemLessons />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
