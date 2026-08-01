@@ -14,6 +14,7 @@ class WebWorkerStdin extends Fd {
     
     // For standard Rust stdin blocking, true SharedArrayBuffer is required.
     // If not available, it throws.
+    // @ts-expect-error: Base class Fd signature may differ
     fd_read(view8: Uint8Array, iovs: any[]): { ret: number, nread: number } {
         // Simplified buffer reader - a robust one requires SharedArrayBuffer + Atomics.wait
         return { ret: 0, nread: 0 }; 
