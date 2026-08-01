@@ -1,0 +1,56 @@
+.cliverse-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.cliverse-header {
+    height: 50px;
+    background-color: #111;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+}
+
+.cliverse-header .back-link {
+    color: #888;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.cliverse-header .back-link:hover {
+    color: #fff;
+}
+
+.cliverse-title {
+    color: #00ff00;
+    font-family: "Fira Code", monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.terminal-wrapper {
+    flex: 1;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Override xterm.js defaults for full height */
+.terminal-wrapper .xterm {
+    height: 100%;
+}
+
+.terminal-wrapper .xterm-viewport {
+    background-color: transparent !important;
+}

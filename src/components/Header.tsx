@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Terminal } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 export const Header: React.FC = () => {
@@ -39,7 +39,13 @@ export const Header: React.FC = () => {
                          Back to Home
                     </Link>
                 )}
-                <ThemeToggle />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <a href="/cliverse" className="cliverse-btn" title="Switch to CLIverse">
+                        <Terminal size={18} />
+                        <span className="cliverse-btn-text">CLIverse</span>
+                    </a>
+                    <ThemeToggle />
+                </div>
             </div>
         </nav>
     );

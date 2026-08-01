@@ -15,6 +15,7 @@ import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { PostEditor } from './pages/admin/PostEditor';
 import { ProjectEditor } from './pages/admin/ProjectEditor';
 import { ProjectDetails } from './pages/ProjectDetails';
+import { Cliverse } from './pages/Cliverse';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Routes>
                 {/* Admin routes — outside of Layout, standalone */}
                 <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/cliverse" element={<Cliverse />} />
                 <Route path="/admin" element={
                   <ProtectedRoute><AdminDashboard /></ProtectedRoute>
                 } />
