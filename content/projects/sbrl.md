@@ -1,7 +1,7 @@
 <!-- Overview Section -->
 <div className="content-section">
 <h2>Project Overview</h2>
-<p>The Petroleum Fraud Detection System is an advanced machine learning solution designed to identify and prevent fraudulent activities in petroleum plants. This project leverages state-of-the-art deep learning techniques to analyze operational data and detect anomalies that indicate potential fraud.</p>
+<p>Bio Log is an immersive digital platform that transforms plant and animal biology into a visually stunning experience. Built primarily for Nigerian secondary school students, it combines interactive 3D models, comprehensive encyclopedia articles, and WAEC past questions into a modern, installable Progressive Web App (PWA).</p>
 <div className="stats-grid">
 <div className="stat-card">
 <h4>90%</h4>
