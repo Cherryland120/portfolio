@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# My Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my full-stack web portfolio! This repository houses a comprehensive, interactive personal website built with React, TypeScript, and Vite. 
+It features a custom blog, project showcase, dynamic review system, admin dashboard, and an integrated WebAssembly terminal emulator (CLIverse).
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Home Page**: Features a profile carousel, featured projects, recent blog posts, and a sentiment-analyzed review submission form (`TasGuard API`).
+- **Custom Blog System**: A fully functional blog rendering Markdown posts dynamically fetched from an API.
+- **Project Showcase**: Detailed views for individual projects, complete with tags, tech stacks, and GitHub integration.
+- **Admin Dashboard**: A protected route (secured by `jsonwebtoken` and `bcryptjs`) for managing portfolio content and blog posts.
+- **CLIverse**: A standout "easter egg" feature! A built-in terminal emulator (`xterm.js`) that runs native CLI programs (compiled from Rust to WASM) securely in the browser using Web Workers, `@bjorn3/browser_wasi_shim`, and `SharedArrayBuffer` for synchronous I/O.
+- **Theme Toggle**: Built-in support for dark and light modes.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend Framework**: React 19 + TypeScript + Vite
+- **Styling**: Vanilla CSS with comprehensive design tokens and responsive media queries
+- **Routing**: React Router DOM (v7)
+- **Content Rendering**: `react-markdown`, `rehype-raw`, `remark-gfm`
+- **Security & Auth**: `bcryptjs`, `jsonwebtoken`
+- **Terminal Emulator**: xterm.js & WASI
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js (v18 or higher recommended)
+- npm or yarn
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Cherryland120/portfolio.git
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Start the local development server:
+   ```bash
+   npm run dev
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   *Note: Our `vite.config.ts` automatically injects `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers to ensure `SharedArrayBuffer` is enabled during local development for the CLIverse to function.*
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+
+## 📝 License
+
+This project is open-source and available under the MIT License.
