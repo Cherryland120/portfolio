@@ -1,23 +1,42 @@
 import { WASI, Fd, ConsoleStdout } from '@bjorn3/browser_wasi_shim';
 
 class WebWorkerStdin extends Fd {
-    buffer: Uint8Array = new Uint8Array(0);
+    int32: Int32Array;
+    data: Uint8Array;
     
-    constructor() {
+    constructor(sab: SharedArrayBuffer) {
         super();
+        this.int32 = new Int32Array(sab);
+        this.data = new Uint8Array(sab, 8);
     }
     
-    // In a real robust implementation, this would use SharedArrayBuffer and Atomics.wait
-    // to block execution until input is available. Since setting up SharedArrayBuffer 
-    // requires strict CORS headers that might break other parts of the site, we'll
-    // attempt a non-blocking or simplified approach here.
-    
-    // For standard Rust stdin blocking, true SharedArrayBuffer is required.
-    // If not available, it throws.
     // @ts-expect-error: Base class Fd signature may differ
     fd_read(view8: Uint8Array, iovs: any[]): { ret: number, nread: number } {
-        // Simplified buffer reader - a robust one requires SharedArrayBuffer + Atomics.wait
-        return { ret: 0, nread: 0 }; 
+        let nread = 0;
+        for (let iovec of iovs) {
+            let ptr = iovec.buf;
+            let len = iovec.buf_len;
+            
+            while (len > 0) {
+                let head = Atomics.load(this.int32, 0);
+                let tail = Atomics.load(this.int32, 1);
+                
+                if (head === tail) {
+                    if (nread > 0) {
+                        break;
+                    }
+                    Atomics.wait(this.int32, 1, tail);
+                    continue;
+                }
+                
+                view8[ptr] = this.data[head % this.data.length];
+                ptr++;
+                len--;
+                nread++;
+                Atomics.store(this.int32, 0, head + 1);
+            }
+        }
+        return { ret: 0, nread }; 
     }
 }
 
@@ -28,13 +47,13 @@ const writeToWorker = (buffer: Uint8Array) => {
 
 self.onmessage = async (e) => {
     if (e.data.type === 'start') {
-        const { url } = e.data;
+        const { url, sab } = e.data;
         
         try {
             const args = [url];
             const env: string[] = [];
             const fds = [
-                new WebWorkerStdin(), // stdin
+                new WebWorkerStdin(sab), // stdin
                 new ConsoleStdout(writeToWorker), // stdout
                 new ConsoleStdout(writeToWorker), // stderr
             ];

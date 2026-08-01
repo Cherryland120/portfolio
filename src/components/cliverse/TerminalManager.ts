@@ -5,6 +5,8 @@ export class TerminalManager {
     private apps: any[] = [];
     private worker: Worker | null = null;
     private isRunningApp = false;
+    private sab: SharedArrayBuffer | null = null;
+    private lineBuffer = '';
 
     constructor(term: Terminal) {
         this.term = term;
@@ -27,9 +29,9 @@ export class TerminalManager {
         this.showMenu();
 
         // Handle terminal input
-        this.term.onData(async (data) => {
+        this.term.onData(async (inputStr) => {
             // Escape key (ASCII 27)
-            if (data === '\x1b') {
+            if (inputStr === '\x1b') {
                 if (this.isRunningApp) {
                     this.killApp();
                 } else {
@@ -39,13 +41,37 @@ export class TerminalManager {
             }
 
             if (this.isRunningApp) {
-                // If app is running, send input to the Web Worker via postMessage
-                if (this.worker) {
-                    this.worker.postMessage({ type: 'stdin', data });
+                // Buffer input line by line to handle backspaces correctly
+                if (inputStr === '\r' || inputStr === '\n') {
+                    this.term.write('\r\n');
+                    this.lineBuffer += '\n';
+                    
+                    if (this.worker && this.sab) {
+                        const int32 = new Int32Array(this.sab);
+                        const data = new Uint8Array(this.sab, 8);
+                        const bytes = new TextEncoder().encode(this.lineBuffer);
+                        
+                        let tail = Atomics.load(int32, 1);
+                        for (let i = 0; i < bytes.length; i++) {
+                            data[tail % data.length] = bytes[i];
+                            tail++;
+                        }
+                        Atomics.store(int32, 1, tail);
+                        Atomics.notify(int32, 1);
+                    }
+                    this.lineBuffer = '';
+                } else if (inputStr === '\x7f' || inputStr === '\b') { // Backspace
+                    if (this.lineBuffer.length > 0) {
+                        this.lineBuffer = this.lineBuffer.slice(0, -1);
+                        this.term.write('\b \b');
+                    }
+                } else {
+                    this.lineBuffer += inputStr;
+                    this.term.write(inputStr); // local echo
                 }
             } else {
                 // Handle menu selection
-                const choice = parseInt(data, 10);
+                const choice = parseInt(inputStr, 10);
                 if (!isNaN(choice) && choice > 0 && choice <= this.apps.length) {
                     this.runApp(this.apps[choice - 1]);
                 }
@@ -106,7 +132,8 @@ export class TerminalManager {
         };
 
         const wasmUrl = `https://cherryland120.github.io/Ascent/${app.url}`;
-        this.worker.postMessage({ type: 'start', url: wasmUrl });
+        this.sab = new SharedArrayBuffer(4096);
+        this.worker.postMessage({ type: 'start', url: wasmUrl, sab: this.sab });
     }
 
     private killApp() {
