@@ -7,7 +7,7 @@
   ],
   "headers": [
     {
-      "source": "/cliverse(.*)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Cross-Origin-Opener-Policy",

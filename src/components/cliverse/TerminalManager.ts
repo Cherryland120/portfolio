@@ -132,8 +132,13 @@ export class TerminalManager {
         };
 
         const wasmUrl = `https://cherryland120.github.io/Ascent/${app.url}`;
-        this.sab = new SharedArrayBuffer(4096);
-        this.worker.postMessage({ type: 'start', url: wasmUrl, sab: this.sab });
+        try {
+            this.sab = new SharedArrayBuffer(4096);
+            this.worker.postMessage({ type: 'start', url: wasmUrl, sab: this.sab });
+        } catch (err: any) {
+            this.term.writeln(`\r\n\x1b[31m[System Error: SharedArrayBuffer is not supported. Ensure Cross-Origin Isolation is enabled.]\x1b[0m`);
+            this.killApp();
+        }
     }
 
     private killApp() {
