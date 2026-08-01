@@ -49,6 +49,7 @@ self.onmessage = async (e) => {
                 wasi_snapshot_preview1: wasi.wasiImport
             });
             
+            // @ts-expect-error: WebAssembly.Instance types don't perfectly match WASI expectations
             const exitCode = wasi.start(instance);
             postMessage({ type: 'exit', code: exitCode });
             
