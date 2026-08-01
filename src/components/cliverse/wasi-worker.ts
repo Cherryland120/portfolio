@@ -10,7 +10,6 @@ class WebWorkerStdin extends Fd {
         this.data = new Uint8Array(sab, 8);
     }
     
-    // @ts-expect-error: Base class Fd signature may differ
     fd_read(size: number): { ret: number, data: Uint8Array } {
         let result = new Uint8Array(size);
         let nread = 0;
@@ -55,7 +54,6 @@ self.onmessage = async (e) => {
                 new ConsoleStdout(writeToWorker), // stderr
             ];
             
-            // @ts-expect-error: Fd array type mismatch
             const wasi = new WASI(args, env, fds);
             
             const response = await fetch(url);
