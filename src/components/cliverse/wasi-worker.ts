@@ -1,4 +1,4 @@
-import { WASI, Fd, File, OpenFile, ConsoleStdout } from '@bjorn3/browser_wasi_shim';
+import { WASI, Fd, ConsoleStdout } from '@bjorn3/browser_wasi_shim';
 
 class WebWorkerStdin extends Fd {
     buffer: Uint8Array = new Uint8Array(0);
