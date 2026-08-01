@@ -11,32 +11,29 @@ class WebWorkerStdin extends Fd {
     }
     
     // @ts-expect-error: Base class Fd signature may differ
-    fd_read(view8: Uint8Array, iovs: any[]): { ret: number, nread: number } {
+    fd_read(size: number): { ret: number, data: Uint8Array } {
+        let result = new Uint8Array(size);
         let nread = 0;
-        for (let iovec of iovs) {
-            let ptr = iovec.buf;
-            let len = iovec.buf_len;
+        
+        while (size > 0) {
+            let head = Atomics.load(this.int32, 0);
+            let tail = Atomics.load(this.int32, 1);
             
-            while (len > 0) {
-                let head = Atomics.load(this.int32, 0);
-                let tail = Atomics.load(this.int32, 1);
-                
-                if (head === tail) {
-                    if (nread > 0) {
-                        break;
-                    }
-                    Atomics.wait(this.int32, 1, tail);
-                    continue;
+            if (head === tail) {
+                if (nread > 0) {
+                    break;
                 }
-                
-                view8[ptr] = this.data[head % this.data.length];
-                ptr++;
-                len--;
-                nread++;
-                Atomics.store(this.int32, 0, head + 1);
+                Atomics.wait(this.int32, 1, tail);
+                continue;
             }
+            
+            result[nread] = this.data[head % this.data.length];
+            size--;
+            nread++;
+            Atomics.store(this.int32, 0, head + 1);
         }
-        return { ret: 0, nread }; 
+        
+        return { ret: 0, data: result.slice(0, nread) }; 
     }
 }
 
@@ -73,7 +70,8 @@ self.onmessage = async (e) => {
             postMessage({ type: 'exit', code: exitCode });
             
         } catch (err: any) {
-            postMessage({ type: 'error', message: err.toString() });
+            const msg = err.stack ? err.stack.toString() : err.toString();
+            postMessage({ type: 'error', message: msg });
         }
     }
 };
