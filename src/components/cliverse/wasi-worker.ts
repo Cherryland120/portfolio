@@ -21,12 +21,10 @@ class WebWorkerStdin extends Fd {
     }
 }
 
-class WebWorkerStdout extends ConsoleStdout {
-    write(buffer: Uint8Array) {
-        const text = new TextDecoder().decode(buffer);
-        postMessage({ type: 'stdout', data: text.replace(/\n/g, '\r\n') });
-    }
-}
+const writeToWorker = (buffer: Uint8Array) => {
+    const text = new TextDecoder().decode(buffer);
+    postMessage({ type: 'stdout', data: text.replace(/\n/g, '\r\n') });
+};
 
 self.onmessage = async (e) => {
     if (e.data.type === 'start') {
@@ -37,10 +35,11 @@ self.onmessage = async (e) => {
             const env: string[] = [];
             const fds = [
                 new WebWorkerStdin(), // stdin
-                new WebWorkerStdout(1), // stdout
-                new WebWorkerStdout(2), // stderr
+                new ConsoleStdout(writeToWorker), // stdout
+                new ConsoleStdout(writeToWorker), // stderr
             ];
             
+            // @ts-expect-error: Fd array type mismatch
             const wasi = new WASI(args, env, fds);
             
             const response = await fetch(url);
