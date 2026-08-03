@@ -1,4 +1,5 @@
 import { Terminal } from 'xterm';
+import bgMusic from '../../assets/My_Song.mp3';
 
 export class TerminalManager {
     private term: Terminal;
@@ -7,12 +8,22 @@ export class TerminalManager {
     private isRunningApp = false;
     private sab: SharedArrayBuffer | null = null;
     private lineBuffer = '';
+    private audio: HTMLAudioElement | null = null;
 
     constructor(term: Terminal) {
         this.term = term;
     }
 
     async boot() {
+        try {
+            this.audio = new Audio(bgMusic);
+            this.audio.loop = true;
+            this.audio.volume = 0.5;
+            this.audio.play().catch(e => console.warn('Auto-play prevented by browser:', e));
+        } catch (e) {
+            console.error('Audio initialization failed:', e);
+        }
+
         this.term.writeln('Booting Tasker OS...');
         await this.delay(500);
         
@@ -152,6 +163,11 @@ export class TerminalManager {
     }
 
     public dispose() {
+        if (this.audio) {
+            this.audio.pause();
+            this.audio.src = '';
+            this.audio = null;
+        }
         if (this.worker) {
             this.worker.terminate();
         }
