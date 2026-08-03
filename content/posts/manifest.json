@@ -10,5 +10,16 @@
     "image": "/assets/images/blog_images/animator_trigger_system/banner.jpg",
     "metaTitle": "5 Lessons Building a No-Code Unity Animator Tool",
     "metaDescription": "Five lessons I learned turning a personal Unity animation system into a public no-code tool — from battling the Inspector UI to the single keyword that broke everything."
+  },
+  {
+    "title": "Welcome to the CLI-verse",
+    "slug": "welcome-to-the-cli-verse",
+    "excerpt": "",
+    "category": "Rust, CLI",
+    "status": "draft",
+    "date": "2026-08-03",
+    "readTime": "1 min read",
+    "metaTitle": "Welcome to the CLI-verse",
+    "metaDescription": ""
   }
 ]
